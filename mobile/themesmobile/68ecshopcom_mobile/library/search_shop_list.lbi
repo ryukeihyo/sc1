@@ -1,0 +1,46 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{if isset($shop_list)}
+<div class="filter" id="J_Filter">
+  <ul class="filter-inner">
+
+    <li {if $pager.search.sort eq 'goods_id'} class="filter-cur"{/if}><a href="search.php?{foreach from=$pager.search key=key item=item}{if $key neq "sort" and $key neq "order"}{$key}={$item}&{/if}{/foreach}page=1&sort=goods_id&order={if $pager.search.order eq 'DESC'}ASC{else}DESC{/if}#list" >上架<i class="{if $pager.search.order eq 'DESC'}f-ico-arrow-u{else}f-ico-arrow-d{/if}"></i></a></li>
+    <li {if $pager.search.sort eq 'last_update'} class="filter-cur"{/if}><a href="search.php?{foreach from=$pager.search key=key item=item}{if $key neq "sort" and $key neq "order"}{$key}={$item}&{/if}{/foreach}page=1&sort=last_update&order={if $pager.search.order eq 'DESC'}ASC{else}DESC{/if}#list" >更新<i class="{if $pager.search.order eq 'DESC'}f-ico-arrow-d{else}f-ico-arrow-u{/if}"></i></a></li>
+    <li {if $pager.search.sort eq 'salenum'} class="filter-cur"{/if}><a href="search.php?{foreach from=$pager.search key=key item=item}{if $key neq "sort" and $key neq "order"}{$key}={$item}&{/if}{/foreach}page=1&sort=salenum&order={if $pager.search.order eq 'DESC'}ASC{else}DESC{/if}#list" >销量<i class="<!-- {if $pager.search.sort == 'salenum' && $pager.search.order == 'DESC'} -->f-ico-arrow-u<!-- {else} -->f-ico-arrow-d<!-- {/if} -->"></i></a></li>
+    
+    <li {if $pager.search.sort eq 'shop_price'} class="filter-cur"{/if}><a href="search.php?{foreach from=$pager.search key=key item=item}{if $key neq "sort" and $key neq "order"}{$key}={$item}&{/if}{/foreach}page=1&sort=shop_price&order={if $pager.search.order eq 'DESC'}ASC{else}DESC{/if}#list">价格<i class="{if $pager.search.order eq 'DESC'}f-ico-arrow-d{else}f-ico-arrow-u{/if}"></i></a></li>
+
+    <li {if $pager.search.sort eq 'shop_search'} class="filter-cur"{/if}><a href="search.php?{foreach from=$pager.search key=key item=item}{if $key neq "sort"}{$key}={$item}&{/if}{/foreach}page=0&sort=shop_search#list">店铺</a></li>
+    
+  </ul>
+</div>
+{if $shop_list}
+ <div class="m-animation_shop" style="opacity: 1;">
+ {foreach from=$shop_list item=shops name=shops_list}
+ <div class="store">
+  <div class="title">
+	<span class="shop_name">{$shops.shop_name}</span>
+    <span class="enter_store"><a href='./supplier.php?suppId={$shops.supplier_id}'>进入店铺</a></span>
+  </div>
+  {if $shops.goodlist}
+  <ul  class="shop_goods">
+  {foreach from=$shops.goodlist item=goods name=goods_list}
+     <li {if $smarty.foreach.goods_list.iteration % 3 eq 1}style="margin-left:0px"{/if}> 
+     	<a href="{$goods.url}"> <img src="{$goods.goods_thumb}" title="{$goods.goods_name|escape:html}"/> </a> </li>
+  {/foreach}
+  </ul>
+  {/if}
+  </div>
+{/foreach}
+</div>
+
+{include file='library/pages.lbi'}
+      {else}  
+	<ul class="new-mu_l2w">
+					<div class="new-cp-prom2">
+	<span class="new-logo2"></span>
+	<strong class="new-span-block">抱歉暂时没有相关结果，换个词试试吧</strong>
+    </div>
+			</ul>
+   {/if}         
+                    
+{/if}

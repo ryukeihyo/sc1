@@ -1,0 +1,60 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="filter" id="J_Filter" style="z-index:999999">
+<div class="new-ct new-p-re">
+  <div class="new-search">
+    <div class="new-tab-type">
+      <div class="new-tbl-type"> 
+      	<a href="javascript:void(0)" id="btn_sort" f="1" class="new-tbl-cell on"><span class="new-bar"></span><span class="new-p-re">排序<span class="new-icon-down"></span></span></a> 
+        <a href="javascript:void(0)" id="btn_stock" f="1" class="new-tbl-cell"><span class="new-bar"></span><span class="new-p-re">库存<span class="new-icon-down"></span></span></a> 
+        <a href="javascript:void(0)" id="btn_delivery" f="1" class="new-tbl-cell"><span class="new-bar"></span><span class="new-p-re">配送<span class="new-icon-down"></span></span></a> 
+        <a href="javascript:void(0)" id="btn_filter" f="1" class="new-tbl-cell"><span class="new-bar"></span><span class="icon">筛选<span></span></span></a> 
+      </div>
+    </div>
+    <div class="new-tab-type2" style="overflow: hidden; height: 34px; display: block; opacity: 10;">
+      <div class="new-tbl-type"> 
+      	<ul class="filter-inner">
+ 	<li {if $pager.sort eq 'goods_id'} class="filter-cur"{/if}><a href="{$script_name}.php?category={$category}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter_attr={$filter_attr}&page={$pager.page}&sort=goods_id&order=<!-- {if $pager.sort == 'goods_id' && $pager.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->#goods_list" >上架<i class="<!-- {if $pager.sort == 'goods_id' && $pager.order == 'DESC'} -->f-ico-arrow-u<!-- {else} -->f-ico-arrow-d<!-- {/if} -->"></i></a></li>
+    <li {if $pager.sort eq 'last_update'} class="filter-cur"{/if}><a href="{$script_name}.php?category={$category}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter_attr={$filter_attr}&page={$pager.page}&sort=last_update&order=<!-- {if $pager.sort == 'last_update' && $pager.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->#goods_list" >更新<i class="<!-- {if $pager.sort == 'last_update' && $pager.order == 'DESC'} -->f-ico-arrow-u<!-- {else} -->f-ico-arrow-d<!-- {/if} -->"></i></a></li>
+    <li {if $pager.sort eq 'salenum'} class="filter-cur"{/if}><a href="{$script_name}.php?category={$category}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter_attr={$filter_attr}&page={$pager.page}&sort=salenum&order=<!-- {if $pager.sort == 'salenum' && $pager.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->#goods_list" >销量<i class="<!-- {if $pager.sort == 'salenum' && $pager.order == 'DESC'} -->f-ico-arrow-u<!-- {else} -->f-ico-arrow-d<!-- {/if} -->"></i></a></li>
+    <li {if $pager.sort eq 'shop_price'} class="filter-cur"{/if}><a href="{$script_name}.php?category={$category}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter_attr={$filter_attr}&page={$pager.page}&sort=shop_price&order=<!-- {if $pager.sort == 'shop_price' && $pager.order == 'ASC'} -->DESC<!-- {else} -->ASC<!-- {/if} -->#goods_list">价格<i class="<!-- {if $pager.sort == 'shop_price' && $pager.order == 'ASC'} -->f-ico-arrow-d<!-- {else} -->f-ico-arrow-u<!-- {/if} -->"></i></a></li>
+  </ul>
+      </div>
+    </div>
+    <div class="new-tab-type3" style=" display: none; height: 34px; opacity: 10; -webkit-transition: opacity 0.6s linear; transition: opacity 0.6s linear;z-index:96">
+      <div class="new-tbl-type"> 
+       <span class="new-tbl-cell">
+        <div class="new-city-option" style="width:95%;float:left;margin-left:2%"> 
+          	{* 代码增加_start By morestock_morecity *}
+		<link rel="stylesheet" href="themesmobile/68ecshopcom_mobile/css/region_city.css">
+		{insert name='select_region' from='good' title='配&nbsp;送&nbsp;至：'}
+		{insert_scripts files='select_region.js?0705'}	    
+	        {* 代码增加_end  By  morestock_morecity *}
+          </div>
+        </span>
+      </div>
+    </div>
+    <div class="new-tab-type4" style="overflow: hidden; display: none; height: 34px; opacity: 10;">
+      <div class="new-tbl-type"> 
+        <!--{foreach from=$filterinfo item=filter}-->
+	    <input type='radio' name='fff' onclick='top.location.href="{$filter.url}"' <!-- {if $filter.selected} --> checked <!-- {/if} --> >{$filter.name}</input>
+	    <!--{/foreach}-->
+      </div>
+    </div>
+  </div> 
+</div>
+</div>
+<div class="filter-placeholder" style="height: 39px; display: none;"></div>
+{if $goods_list}
+<div id="J_ItemList" style="opacity: 1;" class="srp m-animation album">
+	<div class="product single_item info"> 
+		
+	</div>
+	<a href="javascript:;" class="get_more"><img src='../themesmobile/68ecshopcom_mobile/img/loader.gif'></a>
+</div>
+ {else}
+    <ul class="new-mu_l2w">
+						<div class="new-cp-prom2">
+                <strong class="new-span-block">抱歉暂时没有相关结果，换个筛选条件试试吧</strong>
+            </div>
+			        </ul>
+{/if}

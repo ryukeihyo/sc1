@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>{$page_title}</title>
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<link rel="shortcut icon" href="static/img/favicon.png">
+<link rel="apple-touch-icon-precomposed" href="static/img/website_icon.png">
+<link rel="stylesheet" href="themesmobile/68ecshopcom_mobile/css/ecsmart.css">
+<style type="text/css">
+.J_promoteWrapper1 .bd{margin:10px 0px}
+.cart_floor table.customer-info-box td,.cart_floor table.customer-info-box th{height:30px;background:#fff;padding:0px;border:#e5e5e5 1px solid}
+.cart_floor table.customer-info-box th{ text-align:right}
+.cart_floor table.customer-info-box td{padding-left:5px}
+.cart_floor table.customer-info-box2{float:left;width:25%;}
+.cart_floor table.customer-info-box2 td{padding:5px;border:none}
+</style>
+{insert_scripts files='common.js,utils.js'}
+</head>
+<body id="page_goods">
+<header id="header" class='header'>
+  <h1>活动列表</h1>
+  <a href="javascript:history.back(-1)" class="back">返回</a> 
+</header>
+<section class="cart_floor">
+  <div class="J_promoteWrapper1">
+        {foreach from=$list item=val name=list}
+         <div class="bd"> 
+         	<img src="{$val.logo|default:images/ceshi.jpg}" width="100%" />
+         </div>
+          <div class="customer-info-box">
+                  <table width="100%" cellpadding="1" cellspacing="1" bgcolor="#e5e5e5" border="0" class="customer-info-box">
+                    <tr>
+                    	<td colspan="2">
+                  <p><b>{$val.act_name}</b></p>
+                  <p>{$val.act_type}<!-- {if $val.act_type ne $lang.fat_goods} -->{$val.act_type_ext}<!-- {/if} --></p>
+		 </td>
+                        <td colspan="2" class="brands-deal"> <!-- {if $val.shop_logo} -->
+		  <img style="display: block;" src="{$val.shop_logo}" class="logo">
+		  <!-- {else} -->
+		  {$val.shop_name}
+		  {/if}</td>
+                    </tr>
+                    <tr>
+                      <th width="31%" align="right">开始时间：</th>
+                      <td width="25%" align="left">{$val.start_time}</td>
+                      <th width="22%" align="right">{$lang.label_max_amount}</th>
+                      <td align="left">
+                      <!-- {if $val.max_amount > 0} --> 
+                        {$val.max_amount} 
+                        <!-- {else} --> 
+                        不限
+                        <!-- {/if} --></td>
+                    </tr>
+                    <tr>
+                      <th align="right">结束时间：</th>
+                      <td>{$val.end_time}</td>
+                      <th align="right">{$lang.label_min_amount}</th>
+                      <td>
+		      <!-- {if $val.min_amount > 0} --> 
+                        {$val.min_amount} 
+                        <!-- {else} --> 
+                        不限
+                        <!-- {/if} -->
+		      </td>
+                    </tr>
+                    <tr>
+                      <th align="right">优惠会员等级：</th>
+                      <td colspan="3"><!-- {foreach from=$val.user_rank item=user} --> 
+                        {$user} 
+                        <!-- {/foreach} --></td>
+                    </tr>
+                    <tr>
+                      <th align="right">{$lang.label_act_range}</th>
+                      <td colspan="3"> {$val.act_range} 
+                        <!-- {if $val.act_range ne $lang.far_all} --> 
+                        :
+                        <!-- {foreach from=$val.act_range_ext item=ext} --> 
+                        <a href="{$val.program}{$ext.id}" taget="_blank" class="f6"><span class="f_user_info"><u>{$ext.name}</u></span></a> 
+                        <!-- {/foreach} --> 
+                        <!-- {/if} --></td>
+                    </tr>
+                    
+                    <tr>
+                      <th align="right">{$lang.label_act_type}</th>
+                      <td colspan="3"> {$val.act_type}<!-- {if $val.act_type ne $lang.fat_goods} -->{$val.act_type_ext}<!-- {/if} --></td>
+                    </tr>
+                    <!-- {if $val.gift} -->
+                    <tr>
+                      <td colspan="4" style="padding:0px;border:none">
+                      <!-- {foreach from=$val.gift item=goods} -->                        
+                        <table cellpadding="1" cellspacing="1" bgcolor="#e5e5e5" border="0"  class="customer-info-box2">
+                          <tr>
+                            <td align="center"><a href="goods.php?id={$goods.id}" title="{$goods.name}"><img src="{$goods.thumb}" alt="{$goods.name}" width="50" height="50"/></a></td>
+                          </tr>
+                          <tr>
+                            <td align="center" style="padding:0px;height:30px"><!-- {if $goods.price > 0} --> 
+                              {$goods.price}{$lang.unit_yuan} 
+                              <!-- {else} --> 
+                              {$lang.for_free} 
+                              <!-- {/if} --></td>
+                          </tr>
+                        </table>
+                        
+                        <!-- {/foreach} --></td>
+                    </tr>
+                    <!-- {/if} -->
+                  </table>
+                </div>
+          {/foreach} 
+      </div>
+      </section>
+<script type="text/javascript" src="themesmobile/68ecshopcom_mobile/js/jquery.js"></script>
+<script type="text/javascript" src="themesmobile/68ecshopcom_mobile/js/jquery.mmenu.js"></script>
+<script type="text/javascript">
+			$(function() {
+				$('nav#menu').mmenu();
+			});
+</script>
+<!-- #BeginLibraryItem "/library/footer_nav.lbi" --><!-- #EndLibraryItem -->
+
+<script type="text/javascript">
+
+$(function() {
+
+	$('#search_text').click(function(){
+		$(".showpage").children('div').hide();
+		$("#search_hide").css('position','fixed').css('top','0px').css('width','100%').css('z-index','999').show();
+	})
+	$('#get_search_box').click(function(){
+		$(".showpage").children('div').hide();
+		$("#search_hide").css('position','fixed').css('top','0px').css('width','100%').css('z-index','999').show();
+	})
+	$("#search_hide .close").click(function(){
+		$(".showpage").children('div').show();
+		$("#search_hide").hide();
+	})
+});
+</script>
+</body>
+</html>

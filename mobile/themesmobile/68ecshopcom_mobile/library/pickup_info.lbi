@@ -1,0 +1,16 @@
+<div id="pickup_point_list">
+{if $pickupinfo}
+<ul>
+{foreach from=$pickupinfo key=pid item=names}
+<li>
+	<p class="shop_name">{$names.shop_name}</p>
+    <p>地址：{$names.address}</p>
+    <p>联系人：{$names.contact}</p>
+    <p>联系方式：{$names.phone}</p>
+</li>
+{/foreach}
+</ul>
+{else}
+<div style="padding:10px 0;text-align:center;">该地区尚未开放自提点</div>
+{/if} 
+</div>

@@ -1,0 +1,86 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<?php
+$GLOBALS['smarty']->assign('cat_recommend_type',get_cat_recommend_type($GLOBALS['smarty']->_var['goods_cat']['id']));
+?>
+<!-- 1F start -->
+<div class="floor-common">
+ <b>1F {$goods_cat.name|escape:html}</b>
+ <div class="pull-right">
+              <?php
+                $GLOBALS['smarty']->assign('child_cat',get_child_cat($GLOBALS['smarty']->_var['goods_cat']['id'], 5));
+               ?>
+           <!--{foreach from=$child_cat item=cat_item name=child_cat}-->
+           <a href="category.php?id={$cat_item.id}">{$cat_item.name|escape:html}</a>
+           <!--{/foreach}-->
+	<a href="category.php?id={$goods_cat.id}" class="more pull-right">更多<img src="img/more.jpg" alt="" /></a>
+ </div>
+</div>
+<div class="floor-list">
+<?php
+$GLOBALS['smarty']->assign('best_goods', get_cat_recommend_goods('best', get_children($GLOBALS['smarty']->_var['goods_cat']['id']), 10));
+?>
+<!-- 左侧 -->
+ <div class="w237 pull-left">
+ <a href="#"><img src="img/ad1.jpg" alt="" /></a>
+ </div>
+
+ <!-- 中部4个 -->
+ <ul class="w722 pull-left">
+ <!--{foreach from=$best_goods item=goods name=cat_item_goods}-->
+    {if $smarty.foreach.cat_item_goods.iteration < 5}
+	<li>
+	<div class="floor-pf">
+	{$goods.short_style_name} <br/>
+	<font class="yellow">{$goods.brief}</font>
+	</div>
+	<div class="main_img">
+	<a href="{$goods.url}">
+	<img src=".{$goods.original_img}" alt="{$goods.name|escape:html}" height="178" width="355" />
+	</a></div>
+	</li>
+    {/if}
+<!--{/foreach}-->
+
+ </ul>
+
+ <!-- 右侧1个 -->
+ <div class="w240">
+  <!--{foreach from=$best_goods item=goods name=cat_item_goods}-->
+     {if $smarty.foreach.cat_item_goods.iteration == 5}
+ <div class="floor-pf">
+	{$goods.short_style_name} <br/>
+	<font class="yellow">{$goods.brief}</font>
+	</div>
+	<div class="main_img">
+	<a href="{$goods.url}">
+	<img src=".{$goods.original_img}" alt="{$goods.name|escape:html}" height="357" width="239" />
+	</a></div>
+{/if}
+<!--{/foreach}-->
+ </div>
+
+ <!-- 底部4个 -->
+ <ul class="floor-list2">
+   <!--{foreach from=$best_goods item=goods name=cat_item_goods}-->
+{if $smarty.foreach.cat_item_goods.iteration > 5 && $smarty.foreach.cat_item_goods.iteration < 10}
+
+ <li {if $smarty.foreach.cat_item_goods.iteration == 6 || $smarty.foreach.cat_item_goods.iteration == 9  } class="w237" {else}class="w238"{/if}>
+	<div class="floor-pf">
+	<b>{$goods.short_style_name}</b> <br/>
+	<p class="gray">{$goods.brief}</p>
+	<font class="red price">￥{$goods.market_price}</font>
+	</div>
+	<div class="main_img">
+	<a href="{$goods.url}"><img  src=".{$goods.original_img}" alt="{$goods.name|escape:html}" height="181" />
+	</a></div>
+ </li>
+
+
+{/if}
+<!--{/foreach}-->
+
+ </ul>
+
+ </div>
+
+<!-- 1F End -->

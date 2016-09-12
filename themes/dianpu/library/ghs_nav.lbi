@@ -1,0 +1,32 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="ghs_body">
+    <div class="ghs_content" style="overflow:hidden">
+    	{$shopheader}
+    </div>
+    <div style="height:0px; line-height:0px; clear:both"></div>
+    <div class="ghs_title" style=" border-bottom:2px solid {$navcolor}">
+     <div class="ghs_content" >
+        <div class="fl" style="width:840px;">
+        <a href="supplier.php?suppId={$smarty.get.suppId}" class="cur" style="background:{$navcolor}">店铺首页</a>
+        <!--{foreach from=$navigator_list_supplier.middle item=mall_get_navigator}-->
+        <A title="{$mall_get_navigator.name|escape:html}" style="color:#333;" href="{$mall_get_navigator.url}" {if $mall_get_navigator.opennew}target="_blank"  {/if}>{$mall_get_navigator.name|escape:html}</A> 
+        <!--{/foreach}-->
+        </div>
+    <div class="su_Search fr" style="width:355px;">
+	 <form id="searchForm" name="searchForm" method="get" action="/supplier.php">
+	 <input type='hidden' name='go' value='search'>
+	 <input type='hidden' name='suppId' value='{$smarty.request.suppId}'>
+       <input class="fl" style="width:180px;" name="keywords" type="text" id="su_keyword" value='{$smarty.request.keywords|default:请输入你要查找的商品}' onClick="javascript:this.value='';"/>
+      {if $search_price }
+       <select name="price" class="su-select" style="float:left;">
+                {foreach from=$search_price item=region key=key}
+                  <option class="su-option" value="{$key}" {if $smarty.request.price eq $key}selected{/if}>{$region}</option>
+                {/foreach}
+        </select>
+	{/if}
+       <input class="fr"  type="submit" id="btsearch" value="搜 索" style="background:{$navcolor}"/>
+    </form>
+    </div>
+     </div>
+    </div>
+</div>

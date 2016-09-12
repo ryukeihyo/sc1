@@ -1,0 +1,38 @@
+<div id="content01">
+<!--{foreach from=$comments.item_list item=value}-->
+  <dl id="tab5">
+	<div class="pingjia-list">
+	<table width="100%">
+		<tr>
+			<td width="100"><img src="images/grade/{$value.user_rank.rank_id}.gif" />
+	{if $value.hide_username eq 1}匿名{else}{$value.user_name}{/if}</td>
+	<td style="padding:0 20px;">
+	<p> {if $value.comment_rank}<img src="images/stars{$value.comment_rank}.gif" style="float:left"/>{/if} </p></br>
+	<p>{$value.content}</p>
+	<div class="tags">
+	<!--{foreach from=$value.tags item=name}--> 
+          <span>{$name}</span>
+          <!--{/foreach}-->
+	</div>
+	</td>
+	<td width="158" valign="top" align="right" style="padding-right:15px;">{$value.add_time_str}</td>
+		</tr>
+	{if $value.comment_reps}
+      <tr>
+        <th>客服回复：</th>
+        <td> {foreach from=$value.comment_reps item=val}
+          <div style="color:#F00; padding:10px 0 10px 0">{$val.content}</div>
+          {/foreach} </td>
+      </tr>
+     {/if}
+	 
+	</table>
+	</div>
+	
+	<p class="pull-right cphf"><a  onClick="show_good()">回复(0)</a></p>
+	
+</dl>
+<!--{/foreach}-->
+
+
+</div>

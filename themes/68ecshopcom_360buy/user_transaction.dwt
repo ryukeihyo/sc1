@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>会员中心</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="shortcut icon" href="favicon.ico" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+<link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/style.css"/>
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,user.js'}
+<script src="themes/68ecshopcom_360buy/js/jquery-1.9.1.min.js" data-fixed="true"></script>
+{insert_scripts files='jquery.json.js,transport.js'}
+<!-- 展开关闭分类 -->
+<script type="text/javascript">
+function openShutManager(oSourceObj,oTargetObj,shutAble,oOpenTip,oShutTip){
+var sourceObj = typeof oSourceObj == "string" ? document.getElementById(oSourceObj) : oSourceObj;
+var targetObj = typeof oTargetObj == "string" ? document.getElementById(oTargetObj) : oTargetObj;
+var openTip = oOpenTip || "";
+var shutTip = oShutTip || "";
+if(targetObj.style.display!="none"){
+   if(shutAble) return;
+   targetObj.style.display="none";
+   if(openTip  &&  shutTip){
+    sourceObj.innerHTML = shutTip; 
+   }
+} else {
+   targetObj.style.display="block";
+   if(openTip  &&  shutTip){
+    sourceObj.innerHTML = openTip; 
+   }
+}
+}
+</script>
+</head>
+<body>
+
+{include file='library/page_header.lbi'}
+
+<div class="auto">
+
+<div class="position"><a href="index.php">首页</a>&nbsp;&nbsp;>>&nbsp;&nbsp;<a href="user.php">个人中心</a></div>
+	<div class="user-side">
+		<h5>我的商城</h5>
+		<ul>
+		    <li><a href="user.php"><i></i>欢迎页</a></li>
+			<li><a href="user.php?act=profile"><i></i>基本信息</a></li>
+            <li><a href="#"><i></i>消息管理</a></li>
+            <li><a href="user.php?act=account_log"><i></i>财务管理</a></li>
+            <li><a href="user.php?act=order_list"><i></i>订单管理</a></li>
+            <li><a href="user.php?act=address_list"><i></i>收货地址</a></li>
+            <li><a href="user.php?act=my_comment"><i></i>评价管理</a></li>
+            <li><a href="user.php?act=back_list"><i></i>退货管理</a></li>
+             <li><a href="apply.php"><i></i>我要开店</a></li>
+		</ul>
+	</div>
+
+	 <!--#订单列表界面 start-->
+	<!-- {if $action eq 'order_list'} -->
+	<div class="user-right" style=" float: right;">
+		<div class="user-box1">
+		<div class="m-splist">
+			<div class="m-splist1">
+				<a href="user.php?act=order_list" class="on">所有订单</a>
+				<a href="user.php?act=order_list&composite_status={$status.unconfirmed}">未确认订单<span class="num">({$order_count.unconfirmed})</span></a>
+				<a href="user.php?act=order_list&composite_status={$status.await_pay}">待付款<span class="num">({$order_count.await_pay})</span></a>
+				<a href="user.php?act=order_list&composite_status={$status.await_ship}">待发货<span class="num">({$order_count.await_ship})</span></a></a>
+				<a href="#">待评价</a>
+				<a href="user.php?act=order_list&composite_status={$status.finished}">已成交订单数<span class="num">({$order_count.finished})</span></a>
+			</div>
+
+			<div class="m-splist3">
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr class="tab-bg1">
+						<td width="320" class="text-left">商品</td>
+						<td>价格(元)</td>
+						<td>数量</td>
+						<td>状态</td>
+						<td>实收款(元)</td>
+						<td>评价</td>
+					</tr>
+					<tr class="tab-page">
+						<td colspan="4"><input type="checkbox" />全选    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#">删除</a></td>
+<!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+					</tr>
+										
+				</table>
+				 <!--{foreach from=$orders item=item}-->
+				<table width="100%" cellpadding="0" cellspacing="0" class="m-sptab2">
+
+					<tr class="tab-bg2">
+						<td colspan="4"><input type="checkbox" />&nbsp;&nbsp;
+						<b>{$item.order_time}</b>&nbsp;&nbsp;
+						订单号：<a href="user.php?act=order_detail&order_id={$item.order_id}" class="f6">{$item.order_sn}</a>
+						</td>
+						<td colspan="3" class="text-right"><a href="" style="margin-right:30px;"><img src="img/del.jpg"/></a></td>
+					</tr>
+					<tr class="tr-padding">
+
+						<td width="200px" class="text-left">
+						<!--{foreach from=$item.goods_list item=goods name=goods}-->
+							<a href="{$goods.url}" target="_blank">
+							<!-- {if $goods.goods_id gt 0 && $goods.extension_code neq 'package_buy'} 商品 -->
+                              <img src=".{$goods.thumb}" alt="查看宝贝详情" width="50" height="50">
+                            <!-- {elseif $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
+                               <img src="./themes/68ecshopcom_360buy/images/jmpic/ico_cart_package.gif" alt="查看宝贝详情" width="50" height="50"/>
+                         <!-- {/if} -->
+							</a>
+							{$goods.goods_name}<br />
+						 <!--{/foreach}-->
+						</td>
+						<td>
+						<!--{foreach from=$item.goods_list item=goods name=goods}-->
+                            {$goods.formated_goods_price} <br/>
+						<!--{/foreach}-->
+						</td>
+						<td>
+						<!--{foreach from=$item.goods_list item=goods name=goods}-->
+                            {$goods.goods_number} <br/>
+						<!--{/foreach}-->
+						</td>
+						<td>
+						{$item.order_status}<br/>
+						 <a href="user.php?act=order_detail&order_id={$item.order_id}" class="red">查看详情</a></td>
+						</td>
+						<td>
+							{$item.total_fee}
+						</td>
+						<td>{$item.handler}</td>
+					</tr>
+				</table>
+				<div class="kong10"></div>
+				<!--{/foreach}-->
+				
+
+				<div class="pages3">
+					<!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+				</div>
+				
+			</div>
+		</div>			
+		</div>
+		
+	
+	</div>
+	
+<!-- {/if} -->
+<!--#订单列表界面 end-->
+
+ <!-- 订单详情页面start -->
+ <!--{if $action eq order_detail} -->
+<div class="user-right m-orde2"  style=" float: right;">
+		<div class="user-box1">
+			<h5 class="user-lanmu">交易进度</h5>
+			<div class="m-jindu">
+				<div class="m-jindu2">
+				<li {if $order.order_status == '已确认'} class="on"{/if}><i>1</i><span class="jdt">&nbsp;</span></li>
+
+				<li {if $order.pay_status == '已付款'} class="on"{/if}><i>2</i><span class="jdt">&nbsp;</span></li>
+
+				<li {if $order.shipping_status == '已发货'||$order.shipping_status == '收货确认' } class="on"{/if}><i>3</i><span class="jdt">&nbsp;</span></li>
+
+				<li {if $order.shipping_status == '收货确认'} class="on"{/if}><i>4</i><span class="jdt">&nbsp;</span></li>
+				<li style="width:25px;float:right;" {if $order.comment_status == 1} class="on"{/if}>
+				<i>5</i></li>
+
+				</div>
+				<ul class="m-jindu3">
+					<li ><b>提交订单</b><br>
+					</li>
+					<li ><b>支付成功</b><br>
+					</li>
+					<li><b>商品出库</b></li>
+					<li><b>确认收货</b></li>
+					<li style="margin-left:-25px" >
+
+					<b>评价</b>
+					</li>
+				</ul>
+			</div>
+			<div class="m-step1 top-xian2">
+				<h5 class="user-lanmu">买家信息</h5>
+				<ul>
+					<li>昵称：{$order.consignee}</li>
+					<li>真实姓名：{$order.consignee}</li>
+					<li>城市：{$order.address} </li>
+					<li>联系电话：{$order.mobile}</li>
+					<li>QQ：</li>
+					<li>最佳送货时间：{$order.best_time}</li>
+				</ul>
+			</div>
+
+			<div class="m-step1 top-xian2">
+				<h5 class="user-lanmu">订单信息</h5>
+				<ul>
+					<li>订单编号：{$order.order_sn} </li>
+					<li>成交时间：{$order.confirm_time}</li>
+					<li>支付方式： {$order.pay_name}</li>
+					<li>实付款：<b style="color:#FF5400">{$order.formated_total_fee}</b>元</li>
+				</ul>
+			</div>
+
+
+			<div class="m-splist3">
+				<table width="100%" cellspacing="0" cellpadding="0">
+					<tbody><tr class="tab-bg1">
+						<td width="320" class="text-left">商品</td>
+						<td>价格(元)</td>
+						<td>数量</td>
+						<td>状态</td>
+						<td>小计	</td>
+						<td>申请退换货</td>
+					</tr>
+
+				</tbody></table>
+
+				<table width="100%" cellspacing="0" cellpadding="0" class="m-sptab2">
+					<tbody>
+					 <!-- {foreach from=$goods_list item=goods} -->
+					<tr class="tr-padding">
+						<td width="320" class="text-left">
+							<a href="goods.php?id={$goods.goods_id}">
+							<img class="pull-left padding" alt="" src=".{$package_goods_list.goods_thumb}"></a>
+							{$goods.goods_name}<br>
+						</td>
+						<td>{$goods.goods_price}</td>
+						<td>{$goods.goods_number}</td>
+						<td>
+						{$order.order_status}<br/>
+						{$order.pay_status}<br/>
+						{$order.shipping_status}<br/>
+						</td>
+						<td>
+						{$goods.subtotal}
+						</td>
+						 <td>{if $not_back eq 0}
+                                        {if $order.shipping_status_id eq '1' || $order.shipping_status_id eq '2' || $order.shipping_status_id eq '4'} <font color=#ff3300> {if $goods.back_can}
+                                        [<a href="user.php?act=back_order&order_id={$order.order_id}&goods_id={$goods.goods_id}" style="color:#ff3300;">申请返修/退换货</a>]
+                                        {else}
+                                        [已申请]
+                                        {/if} </font> {/if}
+                                        {else} <font style="color:#ff3300;">[暂不可申请退换货,请在规定时间内申请]</font> {/if}
+                       </td>
+					</tr>
+				 <!-- {/foreach} -->
+				</tbody></table>
+				<div class="kong10"></div>
+			</div>
+
+			<div class="m-step1 top-xian2">
+				<h5 class="user-lanmu">物流信息</h5>
+				<ul>
+					<li>收货人：{$order.consignee}</li>
+					<li>运送方式：{$order.shipping_name}</li>
+					<li>运费：{$order.formated_shipping_fee} </li>
+					<li>收货地址:{$order.address} </li><br>
+					<div></div>
+					<li style="width:100%;float:left;">备注：</li>
+				</ul>
+			</div>
+
+			<div class="m-step1 top-xian2">
+				<h5 class="user-lanmu">发票信息</h5>
+				<ul>
+					<li>单位名称：</li>
+					<li>纳税识别号：</li>
+					<li>发票内容：</li>
+
+				</ul>
+			</div>
+
+			<div class="m-step2">
+				商品总价：{$order.formated_goods_amount}元  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+				运费：{$order.formated_shipping_fee} 元   &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+				实际付款：{$order.formated_total_fee} 元
+			</div>
+
+		</div>
+	</div>
+ <!-- {/if} -->
+<!-- 订单详情页面end-->
+
+ <!-- 收货地址列表页面start -->
+ <!--{if $action eq address_list} -->
+  {* 包含脚本文件 *}
+           {insert_scripts files='utils.js,transport.js,region.js,shopping_flow.js'}
+           <script type="text/javascript">
+               region.isAdmin = false;
+               {foreach from=$lang.flow_js item=item key=key}
+               var {$key} = "{$item}";
+               {/foreach}
+               {literal}
+               onload = function() {
+                 if (!document.all)
+                 {
+                   document.forms['theForm'].reset();
+                 }
+               }
+               {/literal}
+             </script>
+<div class="user-right"  style="float: right;">
+		<div class="user-box1">
+		<div class="m-splist">
+			<div class="m-splist1">
+				<a class="on" href="#">收货地址</a>
+			</div>
+			<div class="m-splist2">
+				<a class="add_address" onclick="document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'" href="javascript:void(0)">新增收货地址</a>
+			</div>
+			<div class="m-splist3 border">
+          <!-- {foreach from=$consignee_list item=consignee key=sn} -->
+				<table width="100%" cellspacing="0" cellpadding="0" class="shdz">
+					<tbody><tr class="tab-bg2">
+						<td style="border:0;" colspan="4"><a href="#">设为默认收货地址</a>
+						 <a onclick="if (confirm('{$lang.confirm_drop_address}'))location.href='user.php?act=drop_consignee&id={$consignee.address_id}'">删除</a>
+						 <a href="#" onclick="selectShipping({$consignee.address_id})">修改</a></td>
+						<td style="border:0;" class="text-right" colspan="2">
+						<a style="margin-right:30px;" onclick="if (confirm('{$lang.confirm_drop_address}'))location.href='user.php?act=drop_consignee&id={$consignee.address_id}'"><img src="img/del.jpg"></a></td>
+					</tr>
+					<tr class="tr-padding">
+						<td colspan="6">
+							<table width="100%" cellspacing="0" cellpadding="0">
+								<tbody><tr>
+									<td>收货人：{$consignee.consignee|escape}</td>
+									<td>所属区域(地区)：
+									 <!-- {foreach from=$country_list item=country} -->
+                                        {if $consignee.country eq $country.region_id}{$country.region_name}{/if}
+                                      <!-- {/foreach} -->
+                                       <!-- {foreach from=$province_list.$sn item=province} -->
+                                            {if $consignee.province eq $province.region_id}{$province.region_name}{/if}
+                                        <!-- {/foreach} -->
+
+
+									</td>
+								</tr>
+								<tr>
+									<td>联系手机号：{$consignee.mobile|escape}</td><td>其他联系人电话：{$consignee.tel|escape}</td>
+								</tr>
+								<tr>
+									<td valign="top" rolspan="2">收货地址：</td><td style="text-align:left!important;">
+										 <!-- {foreach from=$country_list item=country} -->
+                                              {if $consignee.country eq $country.region_id}{$country.region_name}{/if}
+                                            <!-- {/foreach} -->
+                                             <!-- {foreach from=$province_list.$sn item=province} -->
+                                                  {if $consignee.province eq $province.region_id}{$province.region_name}{/if}
+                                              <!-- {/foreach} -->
+                                              <!-- {foreach from=$city_list.$sn item=city} -->
+                                              {if $consignee.city eq $city.region_id}{$city.region_name}{/if}
+                                               <!-- {/foreach} -->
+                                               <!-- {foreach from=$district_list.$sn item=district} -->
+                                                  {if $consignee.district eq $district.region_id}{$district.region_name}{/if}
+                                               <!-- {/foreach} -->
+                                               {$consignee.address|escape}
+									</td>
+								</tr>
+							</tbody></table>
+						</td>
+					</tr>
+				</tbody></table>
+				<div class="kong10"></div>
+                <!-- {/foreach} -->
+            <!-- 弹出新增地址 -->
+          <form action="user.php" method="post" name="theForm" onsubmit="return checkConsignee(this)">
+
+				 <div id="light" class="white_content">
+				 <div class="tc1">
+				 添加收货地址 <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"><img src="img/close.jpg" alt="" /></a>
+				 </div>
+				 <div class="tc2">
+					<label for=""><font class="red">*</font>收货人:</label>
+					<input id="consignee" class="int1" type="text" value="" name="consignee" ></input>
+					<label for=""><font class="red">*</font>所在地区:</label>
+					<div>
+					<select name="country" id="selCountries_{$sn}" onchange="region.changed(this, 1, 'selProvinces_{$sn}')">
+					  <option value="0">{$lang.please_select}{$name_of_region[0]}</option>
+                       <!-- {foreach from=$country_list item=country} -->
+                       <option value="{$country.region_id}">{$country.region_name}</option>
+                       <!-- {/foreach} -->
+					</select>
+                    <!-国家-->
+					<select name="province" id="selProvinces_{$sn}"  onchange="region.changed(this, 2, 'selCities_{$sn}')">
+					  <option value="0">{$lang.please_select}{$name_of_region[1]}</option>
+                       <!-- {foreach from=$province_list.$sn item=province} -->
+                       <option value="{$province.region_id}" >{$province.region_name}</option>
+                       <!-- {/foreach} -->
+					</select>
+
+					<select name="city" id="selCities_{$sn}" onchange="region.changed(this, 3, 'selDistricts_0')">
+						 <option value="0">{$lang.please_select}{$name_of_region[2]}</option>
+                         <!-- {foreach from=$city_list.$sn item=city} -->
+                         <option value="{$city.region_id}">{$city.region_name}</option>
+                         <!-- {/foreach} -->
+					</select>
+
+					   <select name="district" id="selDistricts_{$sn}" {if !$district_list.$sn}style="display:none"{/if}>
+                        <option value="0">{$lang.please_select}{$name_of_region[3]}</option>
+                        <!-- {foreach from=$district_list.$sn item=district} -->
+                        <option value="{$district.region_id}">{$district.region_name}</option>
+                        <!-- {/foreach} -->
+                      </select>
+					</div>
+					<label for=""><font class="red">*</font>详细地址:</label>
+					<div><input id="address" class="int1" type="text" value="" name="address"</div>
+					<table width="100%" cellpadding="0" cellpadding="0" >
+						<tr>
+							<td width="263" align="left"><label for=""><font class="red">*</font>手机:</label>
+								<div><input type="text" value="" id="mobile" class="int1" name="mobile"></div>
+							</td>
+							<td align="left"><label for="">电话:</label>
+								<div><input type="text" value="" id="tel" class="int1" name="tel"></div>
+							</td>
+						</tr>
+					</table>
+					<div><input type="submit" name="submit" value="保存收货地址"/></div>
+					<input type="hidden" value="act_edit_address" name="act">
+                    <input type="hidden" value="" id="address_id" name="address_id">
+				 </div>
+				 </div>
+			</div>
+						<div id="fade" class="black_overlay"></div>
+	 <!-- 弹出新增地址end -->
+		</div>
+		</div>
+
+          </form>
+	</div>
+ <!-- {/if} -->
+
+
+ <!-- 用户信息界面 start-->
+          <!--{if $action eq 'profile'}-->
+          {insert_scripts files='utils.js'}
+          <script type="text/javascript">
+          {foreach from=$lang.profile_js item=item key=key}
+            var {$key} = "{$item}";
+          {/foreach}
+          </script>
+          <script>
+/*第一种形式 第二种形式 更换显示样式*/
+function setTabCatGoods(name,cursel,n){
+for(i=1;i<=n;i++){
+var menu=document.getElementById(name+i);
+var con=document.getElementById("con_"+name+"_"+i);
+con.style.display=i==cursel?"block":"none";
+menu.className=i==cursel?"active":"";
+}
+}
+</script>
+<script type="text/javascript">
+
+function change_pic(img)
+{
+alert("test");
+ var imgObj = document.getElementById("doc");
+ if(imgObj.src == "")
+ {imgObj.src="images/diaochan.png";}
+ else
+ {imgobj.src="images/caocao.png";}
+}
+
+//下面用于图片上传预览功能
+function setImagePreview(avalue) {
+var docObj=document.getElementById("doc");
+
+var imgObjPreview=document.getElementById("preview");
+if(docObj.files &&docObj.files[0])
+{
+//火狐下，直接设img属性
+imgObjPreview.style.display = 'block';
+imgObjPreview.style.width = '150px';
+imgObjPreview.style.height = '150px';
+//imgObjPreview.src = docObj.files[0].getAsDataURL();
+
+//火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
+imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+}
+
+
+var imgObjPreview=document.getElementById("preview1");
+if(docObj.files &&docObj.files[0])
+{
+//火狐下，直接设img属性
+imgObjPreview.style.display = 'block';
+imgObjPreview.style.width = '100px';
+imgObjPreview.style.height = '100px';
+//imgObjPreview.src = docObj.files[0].getAsDataURL();
+
+//火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
+imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+}
+
+
+var imgObjPreview=document.getElementById("preview2");
+if(docObj.files &&docObj.files[0])
+{
+//火狐下，直接设img属性
+imgObjPreview.style.display = 'block';
+imgObjPreview.style.width = '80px';
+imgObjPreview.style.height = '80px';
+//imgObjPreview.src = docObj.files[0].getAsDataURL();
+
+//火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
+imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+}
+
+
+else
+{
+//IE下，使用滤镜
+docObj.select();
+var imgSrc = document.selection.createRange().text;
+var localImagId = document.getElementById("localImag");
+//必须设置初始大小
+localImagId.style.width = "150px";
+localImagId.style.height = "180px";
+//图片异常的捕捉，防止用户修改后缀来伪造图片
+try{
+localImagId.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+}
+catch(e)
+{
+alert("您上传的图片格式不正确，请重新选择!");
+return false;
+}
+imgObjPreview.style.display = 'none';
+document.selection.empty();
+}
+return true;
+}
+
+</script>
+
+	<div class="user-right" style=" float: right;">
+		<div class="user-box1">
+			<h4>个人首页</h4>
+			<div class="user-box101">
+			 <img id="headImagePath" src="{if $smarty.session.headimg}{$smarty.session.headimg}{else}themes/68ecshopcom_360buy/images/shengji_ad/peopleicon_01.gif{/if}" width="100" alt="" class="pull-left">
+			<div class="user-box101-info">
+				<h5>昵称 <b>{$smarty.session.user_name}</b></h5>
+				<p class="jifen"><img src="img/jf.jpg" alt="" />余额: <a href="#"> <font color="#FDA31B">{$profile.user_money}</font></a></p>
+			</div>
+			</div>
+		</div>
+
+		<div class="user-box2">
+
+			<ul id="tabs">
+  <li><a href="#" title="tab1">基本信息</a></li>
+  <li><a href="#" title="tab2">头像图片</a></li>
+</ul>
+<form name="formIdentity" action="user.php" method="post" onsubmit="return identity()" enctype="multipart/form-data">
+<div id="content">
+  <dl id="tab1">
+    <dd><label for="">用户名称：</label><input type="text" name="username" value="{$smarty.session.user_name}" onblur="check_username(this.value)" class="user-int1"/></dd>
+
+	<dd><label for="">出生日期：</label>
+        <input type="text" name="birthday" value="{$profile.birthday}"/>
+	 </dd>
+	<dd class="sex"><label for="">性别：</label>
+
+	<input type="radio" name="sex" value="0"  value="保密" {if $profile.sex==0 }checked{/if}>保密
+	<input type="radio" name="sex" value="1"  {if $profile.sex==1 }checked{/if} />男性
+	<input type="radio" name="sex" value="2"  {if $profile.sex==2 }checked{/if} />女性</dd>
+	<dd><label for="">手机号码：</label>
+	<input name="mobile" type="text"  value="{$profile.mobile_phone}"  class="user-int1"/></dd>
+	<dd><label for="">邮箱：</label>
+	<input name="email" type="text"  value="{$profile.email}"  class="user-int1"/></dd>
+
+	<dd><label for="">QQ号码：</label><input type="text" name="qq" value="{$profile.qq}" class="user-int1"/></dd>
+	<dd class="user-btn">
+	<input name="act" type="hidden" value="act_identity" />
+	<button style="margin-left: 134px;" >保存</button>
+	<button>重置</button></dd>
+	 </form>
+  </dl>
+
+	<dl id="tab2">
+	 <form name="formEdit" action="user.php" method="post" enctype="multipart/form-data" onSubmit="return userEdit()">
+      <div class="tx-left">
+    	<input type="file" class="upfile" name="headimg"  id="doc" onChange="javascript:setImagePreview();"/>
+    	<p class="tx-type">仅支持JPG、GIF、PNG、JPEG、BMP格式,文件小于4M</p>
+    	<div id="localImag"><img id="preview" src="" width="150" height="150" ></div>
+    	<h5 class="pull-left" style="padding:15px 0 2px 0">推荐头像</h5>
+    	<ul class="tx-list">
+    		<li  ><img  onclick="change_pic("img/tx1.jpg")" src="img/tx1.jpg" alt="" /></li>
+    		<li><a href="#"><img src="img/tx2.jpg" alt="" /></a></li>
+    		<li><a href="#"><img src="img/tx3.jpg" alt="" /></a></li>
+    		<li><a href="#"><img src="img/tx4.jpg" alt="" /></a></li>
+    		<li><a href="#"><img src="img/tx5.jpg" alt="" /></a></li>
+    		<li><a href="#"><img src="img/tx6.jpg" alt="" /></a></li>
+    		<li><a href="#"><img src="img/tx7.jpg" alt="" /></a></li>
+    		<li><a href="#"><img src="img/tx8.jpg" alt="" /></a></li>
+    		<li><a href="#"><img src="img/tx9.jpg" alt="" /></a></li>
+    		<li><a href="#"><img src="img/tx10.jpg" alt="" /></a></li>
+    		<li><a href="#"><img src="img/tx11.jpg" alt="" /></a></li>
+    		<li><a href="#"><img src="img/tx12.jpg" alt="" /></a></li>
+    		<li><a href="#"><img src="img/tx13.jpg" alt="" /></a></li>
+    		<li><a href="#"><img src="img/tx14.jpg" alt="" /></a></li>
+    	</ul>
+      </div>
+      <div class="tx-right">
+    	<div class="tx-right1">效果预览</div>
+    	<p style="color:#666;">你上传的图片会自动生成2种图片,请注意小尺寸的头像是否清晰</p>
+    	<p><img id="preview1" src="img/yulan1.jpg" alt="" width="100" height="100"/></p>
+    	<p>100*100像素</p><br/>
+    	<p><img id="preview2"  src="img/yulan2.jpg" alt="" width="50" height="50"/></p>
+    	<p>50*50像素</p>
+      </div>
+      <div class="tx-btn">
+       <button>保存</button>
+     </div>
+      </dl>
+       <input name="act" type="hidden" value="act_edit_img" />
+      </form>
+
+</div>
+
+
+	{insert_scripts files='transport.js,region.js,shopping_flow.js'}
+      			<script type="text/javascript">
+              region.isAdmin = false;
+              {foreach from=$lang.flow_js item=item key=key}
+              var {$key} = "{$item}";
+              {/foreach}
+              {literal}
+              onload = function() {
+                if (!document.all)
+                {
+                  document.forms['theForm'].reset();
+                }
+              }
+              {/literal}
+            </script>
+<script src="js/jquery.js"></script>
+<script>
+$(document).ready(function() {
+	$("#content dl").hide(); // Initially hide all content
+	$("#tabs li:first").attr("id","current"); // Activate first tab
+	$("#content dl:first").fadeIn(); // Show first tab content
+
+    $('#tabs a').click(function(e) {
+        e.preventDefault();
+        $("#content dl").hide(); //Hide all content
+        $("#tabs li").attr("id",""); //Reset id's
+        $(this).parent().attr("id","current"); // Activate this
+        $('#' + $(this).attr('title')).fadeIn(); // Show content for current tab
+    });
+})();
+
+</script>
+		</div>
+	</div>
+
+</div>
+ <!-- {/if} -->
+<!-- 基本信息 end-->
+
+
+<!-- {if $action eq "account_log"} -->
+	<div class="user-right" style=" float: right;">
+		<div class="user-box1">
+			<h4>个人首页</h4>
+			<div class="user-box101">
+			 <img id="headImagePath" src="{if $smarty.session.headimg}{$smarty.session.headimg}{else}themes/68ecshopcom_360buy/images/shengji_ad/peopleicon_01.gif{/if}" width="100" alt="" class="pull-left">
+			<div class="user-box101-info">
+				<h5>昵称 <b>{$smarty.session.user_name}</b><font></font></h5>
+				<p class="jifen">
+					<img src="img/yue.jpg" alt="" />余额: <a href="#"> <font color="#FDA31B">{$surplus_amount}</font></a>&nbsp;&nbsp;
+					<img src="img/tixian.jpg" alt="" /><a href="user.php?act=account_raply"> <font color="#666">提现</font></a>
+				</p>
+			</div>
+			</div>
+		</div>
+		 <!--{if $action eq "account_raply" || $action eq "account_log" || $action eq "account_deposit" || $action eq "account_detail"} -->
+                  <script type="text/javascript">
+                  {foreach from=$lang.account_js item=item key=key}
+                    var {$key} = "{$item}";
+                  {/foreach}
+                </script>
+
+                  <div class="mar_top tixian-box" >
+                  <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#E7E7E7" style="border-collapse:separate">
+                    <tr>
+                      <td align="right" bgcolor="#ffffff">
+                      <a href="user.php?act=account_deposit" style="color: #F52648;">
+                      {$lang.surplus_type_0}</a> |
+                      <a href="user.php?act=account_raply" style="color: #F52648;">
+                      {$lang.surplus_type_1}</a> |
+                      <a href="user.php?act=account_detail" style="color: #F52648;">{$lang.add_surplus_log}</a> |
+                      <a href="user.php?act=account_log" style="color: #F52648;">{$lang.view_application}
+                      </a></td>
+                    </tr>
+                  </table>
+                  </div>
+                  <!-- {/if} -->
+		<div class="user-box1 tixian-box">
+		  <div class="tx-box3">
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr class="lsh-bold">
+						<td>操作时间	</td><td>类型</td><td>金额</td><td>提现方式</td><td>帐号</td><td>状态</td><td>操作</td>
+					</tr>
+					 <!--{foreach from=$account_log item=item}-->
+				    <tr>
+                      <td align="center" bgcolor="#ffffff">{$item.add_time}</td>
+                      <td align="left" bgcolor="#ffffff">{$item.type}</td>
+                      <td align="right" bgcolor="#ffffff">{$item.amount}</td>
+                      <td align="left" bgcolor="#ffffff">
+                      {if $item.tixian_type =='bank' }银行卡{/if}
+                      {if $item.tixian_type =='alipay'}支付宝{/if}
+                      </td>
+                      <td align="left" bgcolor="#ffffff">
+                      {if $item.tixian_type =='bank' }{$item.bank_cardnum}{/if}
+                      {if $item.tixian_type =='alipay'}{$item.alipay_account}{/if}
+                      </td>
+                      <td align="center" bgcolor="#ffffff">{$item.pay_status}</td>
+                      <td align="right" bgcolor="#ffffff">{$item.handle}
+                      <!-- {if ($item.is_paid eq 0 && $item.process_type eq 1) || $item.handle} -->
+                      <a href="user.php?act=cancel&id={$item.id}" onclick="if (!confirm('{$lang.confirm_remove_account}')) return false;">{$lang.is_cancel}</a>
+                        <!-- {/if} --></td>
+                            </tr>
+                     <!--{/foreach}-->
+				</table>
+			</div>
+	             <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+
+
+		</div>
+
+	</div>
+
+<!--{/if}-->
+
+  <!-- {if $action eq "account_raply"} -->
+   <script type="text/javascript">
+     var surplus_amount_empty = "请输入您要提现的金额！";
+     var surplus_amount_error = "您输入的提现金额格式不正确！";
+ </script>
+
+    <div class="user-right" >
+    		<div class="user-box1">
+    			<h4>个人首页</h4>
+    			<div class="user-box101">
+    			 <img id="headImagePath" src="{if $smarty.session.headimg}{$smarty.session.headimg}{else}themes/68ecshopcom_360buy/images/shengji_ad/peopleicon_01.gif{/if}" width="100" alt="" class="pull-left">
+    			<div class="user-box101-info">
+    				<h5>昵称 <b>{$smarty.session.user_name}</b></h5>
+    				<p class="jifen">
+    					<img src="img/yue.jpg" alt="" />余额: <a href="#"> {$surplus_yue}</a>&nbsp;&nbsp;
+    					<img src="img/tixian.jpg" alt="" /><a href="user.php?act=account_raply"> <font color="#666">提现</font></a>
+    				</p>
+    			</div>
+    			</div>
+    		</div>
+
+    		<div class="user-box1 tixian-box">
+    			<div class="tx-box1">
+    				<div onclick="changepay_type(0)"><img src="img/tx_1.jpg"/><span class="pull-left">提现到银行卡</span></div>
+    				<div onclick="changepay_type(1)"><img src="img/tx_2.jpg"/><span class="pull-left">提现到支付宝</span></div>
+    			</div>
+    			 <form name="formSurplus" method="post" action="user.php" onSubmit="return submitSurplus()">
+    			    <input type="hidden" name="surplus_type" value="1" />
+    			    <input type="hidden" value="yinhangka" name="sel_name" id="sel_name">
+                    <input type="hidden" name="act" value="act_account" />
+
+    			<div class="tx-box2"  id="yinhangka">
+    				<ul class="line-box">
+    					<li>
+    					<label for="">提现金额：</label>
+    					<input type="text" name="amount" id="amount" value="" />
+    					<font color="red">*</font>
+    					</li>
+    					<li>
+    					<label for="">银行账号：</label>
+    					<input type="text" name="bank_cardnum" value=""  />
+    					<font color="red">*</font>
+    					</li>
+    				</ul>
+    				<ul class="line-box">
+    					<li>
+    					<label for="">账户名称：</label>
+    					<input type="text"  name="account_name" value=""/><font color="red">*</font>
+    					</li>
+    					<li>
+    					<label for="">开户银行：</label>
+    					<input type="text"  name="account_bank" value=""  /><font color="red">*</font>
+    					</li>
+    				</ul>
+    			</div>
+
+     			<div class="tx-box2" style="display:none"  id="zhifubao">
+                 <ul class="line-box">
+                 	<li>
+                 	<label for="">提现金额：</label>
+                 	<input type="text" name="amount1" id="amount1" value="" /><font color="red">*</font>
+                 	</li>
+                 	<li>
+                 	<label for="">支付宝账户：</label>
+                 	<input type="text" name="alipay_account" values="" />
+                 	<font color="red">*</font>
+                 	</li>
+                 </ul>
+                 <ul class="line-box">
+                 	<li>
+                 	<label for="">真实姓名：</label>
+                 	<input type="text" name="real_name" value="" /><font color="red">*</font>
+                 	</li>
+
+                 </ul>
+                 </div>
+
+    			<div class="tx-submit"><button >提交</button></div>
+            </form>
+
+    			<div class="tx-box3">
+    				<table width="100%" cellpadding="0" cellspacing="0">
+                     <!--{foreach from=$account_log item=item}-->
+                      <tr>
+                        <td align="center" bgcolor="#ffffff">{$item.add_time}</td>
+                        <td align="left" bgcolor="#ffffff">{$item.type}</td>
+                        <td align="right" bgcolor="#ffffff">{$item.amount}</td>
+                        <td align="left" bgcolor="#ffffff">
+                        {if $item.tixian_type =='bank' }银行卡{/if}
+                        {if $item.tixian_type =='alipay'}支付宝{/if}
+                        </td>
+                        <td align="left" bgcolor="#ffffff">
+                        {if $item.tixian_type =='bank' }{$item.bank_cardnum}{/if}
+                        {if $item.tixian_type =='alipay'}{$item.alipay_account}{/if}
+                        </td>
+                        <td align="center" bgcolor="#ffffff">{$item.pay_status}</td>
+                        <td align="right" bgcolor="#ffffff">{$item.handle}
+                        <!-- {if ($item.is_paid eq 0 && $item.process_type eq 1) || $item.handle} -->
+                        <a href="user.php?act=cancel&id={$item.id}" onclick="if (!confirm('{$lang.confirm_remove_account}')) return false;">{$lang.is_cancel}</a>
+                        <!-- {/if} --></td>
+                      </tr>
+                      <!--{/foreach}-->
+    				</table>
+    				  <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+
+    			</div>
+
+
+    		</div>
+
+    	</div>
+  <!--{/if}-->
+
+    <!-- {if $action eq "account_detail"} -->
+        <div class="user-right"  style=" float: right;">
+        <!--{if $action eq "account_raply" || $action eq "account_log" || $action eq "account_deposit" || $action eq "account_detail"} -->
+                       <script type="text/javascript">
+                          {foreach from=$lang.account_js item=item key=key}
+                            var {$key} = "{$item}";
+                          {/foreach}
+                        </script>
+
+                          <div class="mar_top tixian-box" >
+                          <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#E7E7E7" style="border-collapse:separate">
+                            <tr>
+                              <td align="right" bgcolor="#ffffff">
+                              <a href="user.php?act=account_deposit" style="color: #F52648;">
+                              {$lang.surplus_type_0}</a> |
+                              <a href="user.php?act=account_raply" style="color: #F52648;">
+                              {$lang.surplus_type_1}</a> |
+                              <a href="user.php?act=account_detail" style="color: #F52648;">{$lang.add_surplus_log}</a> |
+                              <a href="user.php?act=account_log" style="color: #F52648;">{$lang.view_application}
+                              </a></td>
+                            </tr>
+                          </table>
+                          </div>
+                          <!-- {/if} -->
+        		<div class="user-box1 tixian-box">
+        		  <div class="tx-box3">
+        				<table width="100%" cellpadding="0" cellspacing="0">
+        					<tr class="lsh-bold">
+        						 <tr align="center">
+                                  <td bgcolor="#ffffff">{$lang.process_time}</td>
+                                    <td bgcolor="#ffffff">{$lang.surplus_pro_type}</td>
+                                    <td bgcolor="#ffffff">{$lang.money}</td>
+                                    <td bgcolor="#ffffff">{$lang.change_desc}</td>
+        					</tr>
+        					 <!--{foreach from=$account_log item=item}-->
+                               <tr>
+                                  <td align="center" bgcolor="#ffffff">{$item.change_time}</td>
+                                  <td align="center" bgcolor="#ffffff">{$item.type}</td>
+                                  <td align="right" bgcolor="#ffffff">{$item.amount}</td>
+                                  <td bgcolor="#ffffff" title="{$item.change_desc}">&nbsp;&nbsp;{$item.short_change_desc}
+                               </tr>
+                            <!--{/foreach}-->
+        				</table>
+        			</div>
+        	             <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+                        <div align="right">您当前消费的金额为：{$surplus_amount}</div>
+                        <div align="right">{$lang.current_surplus}￥{$surplus_yue}</div>
+        		</div>
+</div>
+
+    <!--{/if}-->
+
+     <!--充值start-->
+     <!-- {if $action eq "account_deposit"} -->
+     <div class="user-right" style=" float: right;">
+          <form name="formSurplus" method="post" action="user.php" onSubmit="return submitSurplus()">
+            <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#E7E7E7" style="margin-bottom:10px">
+              <tr>
+                <td width="15%" bgcolor="#ffffff">{$lang.deposit_money}:</td>
+                <td align="left" bgcolor="#ffffff"><input type="text" name="amount"  class="inputBg" value="{$order.amount|escape}" size="30" /></td>
+              </tr>
+              <tr>
+                <td bgcolor="#ffffff">{$lang.process_notic}:</td>
+                <td align="left" bgcolor="#ffffff"><textarea name="user_note" cols="55" rows="6" style="border:1px solid #ccc;">{$order.user_note|escape}</textarea></td>
+              </tr>
+            </table>
+            <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#E7E7E7">
+              <tr align="center">
+                <td bgcolor="#ffffff"  colspan="3" align="left">{$lang.payment}:</td>
+              </tr>
+              <tr align="center">
+                <td bgcolor="#ffffff">{$lang.pay_name}</td>
+                <td bgcolor="#ffffff" width="60%">{$lang.pay_desc}</td>
+                <td bgcolor="#ffffff" width="17%">{$lang.pay_fee}</td>
+              </tr>
+              <!-- {foreach from=$payment item=list} -->
+              <tr>
+                <td bgcolor="#ffffff" align="left"><input type="radio" name="payment_id" value="{$list.pay_id}" />
+                  {$list.pay_name}</td>
+                <td bgcolor="#ffffff" align="left">{$list.pay_desc}</td>
+                <td bgcolor="#ffffff" align="center">{$list.pay_fee}</td>
+              </tr>
+              <!-- {/foreach} -->
+              <tr>
+                <td bgcolor="#ffffff" colspan="3"  align="center"><input type="hidden" name="surplus_type" value="0" />
+                  <input type="hidden" name="rec_id" value="{$order.id}" />
+                  <input type="hidden" name="act" value="act_account" />
+                  <input type="submit" class="bnt_blue_1" name="submit" value="{$lang.submit_request}" />
+                  <input type="reset" class="bnt_blue_1" name="reset" value="{$lang.button_reset}" /></td>
+              </tr>
+            </table>
+          </form>
+          </div>
+          <!-- {/if} -->
+           <!--充值end-->
+
+            <!-- {if $action eq "act_account"} -->   <!--充值确认 start-->
+            <div class="user-right" style=" float: right;">
+            <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#E7E7E7" style="border-collapse:separate">
+              <tr>
+                <td width="25%" align="right" bgcolor="#ffffff">{$lang.surplus_amount}</td>
+                <td width="80%" bgcolor="#ffffff">{$amount}</td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#ffffff">{$lang.payment_name}</td>
+                <td bgcolor="#ffffff">{$payment.pay_name}</td>
+              </tr>
+              <tr>
+                <td align="right" bgcolor="#ffffff">{$lang.payment_fee}</td>
+                <td bgcolor="#ffffff">{$pay_fee}</td>
+              </tr>
+              <tr>
+                <td align="right" valign="middle" bgcolor="#ffffff">{$lang.payment_desc}</td>
+                <td bgcolor="#ffffff">{$payment.pay_desc}</td>
+              </tr>
+              <tr>
+                <td colspan="2" bgcolor="#ffffff">{$payment.pay_button}</td>
+              </tr>
+            </table>
+            </div>
+           <!-- {/if} -->
+             <!--充值确认 end-->
+
+<!-- {if $action eq back_list} -->
+ 	<div class="user-right" style=" float: right;">
+          <div class="tabmenu">
+            <ul class="tab pngFix">
+              <li class="active"> <a href="#">退换货订单列表</a> </li>
+            </ul>
+          </div>
+          <div class="blank"></div>
+          <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#E6E6E6" style="border-collapse:separate">
+            <tr align="center">
+              <td bgcolor="#ffffff">退换货<br>
+                申请单号</td>
+              <td bgcolor="#ffffff">原订单号</td>
+              <td bgcolor="#ffffff" width="20%">商品名称</td>
+              <td bgcolor="#ffffff">申请时间</td>
+              <td bgcolor="#ffffff">应退金额</td>
+              <td bgcolor="#ffffff">{$lang.order_status}</td>
+              <td bgcolor="#ffffff">{$lang.handle}</td>
+            </tr>
+            <!--{foreach from=$orders item=item}-->
+            <tr>
+              <td align="center" bgcolor="#ffffff">{$item.back_id}</td>
+              <td align="center" bgcolor="#ffffff">{$item.order_sn}</td>
+              <td align="center" bgcolor="#ffffff" ><a href="{$item.goods_url}" target="_blank">{$item.goods_name}</a></td>
+              <td align="center" bgcolor="#ffffff">{$item.order_time}</td>
+              <td align="right" bgcolor="#ffffff">{$item.refund_money_1}</td>
+              <td align="center" bgcolor="#ffffff">{$item.status_back}</td>
+              <td align="center" bgcolor="#ffffff">{if $item.status_back eq 0} <a href="user.php?act=del_back_order&id={$item.back_id}" onclick="return confirm('你确认要取消吗？')">取消</a> | {/if} <a href="user.php?act=back_order_detail&id={$item.back_id}">查看</a></td>
+            </tr>
+            <!--{/foreach}-->
+          </table>
+          <div class="blank5"></div>
+          <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+          <div class="blank5"></div>
+          </div>
+          <!-- {/if} -->
+
+
+ <!--退换货订单提交start -->
+    <!-- {if $action eq back_order} -->
+             <div class="tabmenu">
+               <ul class="tab pngFix">
+                 <li class="active"> <a href="#">退换货订单提交</a> </li>
+               </ul>
+             </div>
+             <script>
+   	function check_back_form()
+   	{
+   		if (document.getElementById("back_type_2").checked == true)
+   		{
+   			if (document.getElementById("huan_box").innerHTML == "")
+   			{
+   				alert("请添加换货商品！");
+   				document.getElementById("add_huan_btton").focus();
+   				show_huan_goods();
+   				return false;
+   			}
+   		}
+
+   		if (document.getElementById("back_reason").value == '')
+   		{
+   			alert("请输入问题描述！");
+   			document.getElementById("back_reason").focus();
+   			return false;
+   		}
+
+   		if (document.getElementById("back_type_2").checked == true || document.getElementById("back_type_3").checked == true)
+   		{
+   			if (document.getElementById("back_address").value == '')
+   			{
+   				alert("请输入收货地址！");
+   				document.getElementById("back_address").focus();
+   				return false;
+   			}
+   			if (document.getElementById("back_zipcode").value == '')
+   			{
+   				alert("请输入邮政编码！");
+   				document.getElementById("back_zipcode").focus();
+   				return false;
+   			}
+   			if (document.getElementById("back_consignee").value == '')
+   			{
+   				alert("请输入联系人姓名！");
+   				document.getElementById("back_consignee").focus();
+   				return false;
+   			}
+   			if (document.getElementById("back_mobile").value == '')
+   			{
+   				alert("请输入手机号码！");
+   				document.getElementById("back_mobile").focus();
+   				return false;
+   			}
+   		}
+   	}
+   	</script>
+   	<div class="user-right" style=" float: right;">
+             <form action="user.php?act=back_order_act" name="theForm" id="theForm" method="post" onsubmit="return check_back_form();">
+               <table width="100%" border="0" cellpadding="5" cellspacing="1"  bgcolor="#E6E6E6" style="border-collapse:separate">
+                 <tr>
+                   <td align=center bgcolor="#FFFFFF">订单编号</td>
+                   <td align=center bgcolor="#FFFFFF">商品名称</td>
+                   <td align=center bgcolor="#FFFFFF">商品属性</td>
+                   <td align=center bgcolor="#FFFFFF">商品价格</td>
+                   <td align=center bgcolor="#FFFFFF">购买数量</td>
+                   <td align=center bgcolor="#FFFFFF">小计</td>
+                 </tr>
+                 <tr>
+                   <td align=center bgcolor="#FFFFFF">{$back_goods.order_sn}</td>
+                   <td align=center bgcolor="#FFFFFF">{$back_goods.goods_name} </td>
+                   <td bgcolor="#FFFFFF">{$back_goods.goods_attr}</td>
+                   <td align=center bgcolor="#FFFFFF">{$back_goods.goods_price_format}</td>
+                   <td align=center bgcolor="#FFFFFF">{$back_goods.goods_number}</td>
+                   <td align=center bgcolor="#FFFFFF">{$back_goods.total_price_format}</td>
+                 </tr>
+               </table>
+               <div class="blank"></div>
+               <div class="blank"></div>
+               <table width="100%" border="0" cellpadding="5" cellspacing="1" >
+                 <tr>
+                   <td width="15%" align="right" valign=top>服务类型：</td>
+                   <td><input type="radio" name="back_type" id="back_type_1" value="1" checked="checked" onclick="tui_box_show(1)" />
+                     退货　
+                     <input type="radio" name="back_type" id="back_type_2" value="2" onclick="tui_box_show(2)" />
+                     换货　
+                     <input type="radio" name="back_type" id="back_type_3" value="3" onclick="tui_box_show(3)" />
+                     维修
+                     <input type="hidden" name="tui_goods_price" value ="{$back_goods.goods_price}">
+                     <input type="hidden" name="product_id_tui" value ="{$back_goods.product_id}" >
+                     <input type="hidden" name="goods_attr_tui" value ="{$back_goods.goods_attr}" ></td>
+                 </tr>
+                 <tr id="thh_2" style="display:none">
+                   <td width="15%" align="right" valign=top></td>
+                   <td><div>
+                       <input type="button" name="add_huan_btton" id="add_huan_btton" value="添加换货商品" onclick="javascript:show_huan_goods();">
+                       <font color=#ff3300>（*）</font> </div>
+                     <table id="huan_goods" style="padding:10px;background:#eee;display:none;">
+                       <tr>
+                         <td align=right>商品名称：</td>
+                         <td>{$back_goods.goods_name} </td>
+                       </tr>
+                       <!-- {foreach from=$specification item=spec key=spec_key} -->
+                       <!-- {if $spec.attr_type eq 1} -->
+                       <tr>
+                         <td valign=top style="padding-top:5px;" align=right>{$spec.name}：</td>
+                         <td ><div class="catt">
+                             <!-- {foreach from=$spec.values item=value key=key} -->
+                             <a {if $key eq 0}class="cattsel"{/if} onclick="changeAtt(this,{$back_goods.goods_id})" href="javascript:;" name="{$value.id}" title="[{if $value.price gt 0}{$lang.plus}{elseif $value.price lt 0}{$lang.minus}{/if} {$value.format_price|abs}]">{$value.label}
+                             <input style="display:none" id="spec_value_{$value.id}" type="radio" name="spec_{$spec_key}" value="{$value.id}" {if $key eq 0}checked{/if} />
+                             </a>
+                             <!-- {/foreach} -->
+                           </div>
+                           <input type="hidden" name="spec_list" value="{$key}" /></td>
+                       </tr>
+                       <!-- {/if} -->
+                       <!-- {/foreach} -->
+                       <tr>
+                         <td colspan=2><input type="button" value="确定" onclick="add_huan_goods({$back_goods.goods_id});"></td>
+                       </tr>
+                     </table>
+                     <table id="huan_box" >
+                     </table></td>
+                 </tr>
+                 <tr>
+                   <td width="15%" align="right" valign=top>提交数量：</td>
+                   <td><script>
+   			function check_tui_goods_number()
+   			{
+   				var now_number = Number(document.getElementById("tui_goods_number").value);
+   				var goods_number = {$back_goods.goods_number};
+   				if (now_number > goods_number)
+   				{
+   					alert("提交数量不能超过购买数量"+goods_number);
+   					document.getElementById("tui_goods_number").value = goods_number;
+   					document.getElementById("tui_goods_number").focus();
+   				}
+   			}
+   			</script>
+                     <input type="text" name="tui_goods_number" id="tui_goods_number" onblur="check_tui_goods_number()" value="1" size=5></td>
+                 </tr>
+                 <tr>
+                   <td width="15%" align="right" valign=top>问题描述：</td>
+                   <td><textarea name="back_reason" id="back_reason" rows=5 cols=50></textarea>
+                     <font color=#ff3300>（*）</font>
+                     <div style="color:#999">请您如实填写申请原因及商品情况，字数在500字内。</div></td>
+                 </tr>
+                 <tr>
+                   <td width="15%" align="right" valign=top>图片信息：</td>
+                   <td><link rel="stylesheet" href="includes/kindeditor/themes/default/default.css" />
+                     <script src="includes/kindeditor/kindeditor.js"></script>
+                     <script src="includes/kindeditor/lang/zh_CN.js"></script>
+                     <script>
+                   KindEditor.ready(function(K) {
+                       var editor = K.editor({
+                           allowFileManager : true
+                       });
+                       K('#back_order_img').click(function() {
+                           editor.loadPlugin('image', function() {
+                               editor.plugin.imageDialog({
+                                   showRemote : false,
+                                   //imageUrl : K('#url3').val(),
+                                   clickFn : function(url, title, width, height, border, align) {
+   									K('#back_order_img_list').append('<div><img height="60" src="' + url + '"><input type="hidden" name="imgs[]" value="' + url + '" /></div>');
+                                       editor.hideDialog();
+                                   }
+                               });
+                           });
+                       });
+                   });
+               </script>
+                     <style>
+   			#back_order_img_list div { float:left; margin:0 10px 10px 0;}
+   			</style>
+                     <div id="back_order_img_list" class="clearfix"> </div>
+                     <div><img id="back_order_img" src="images/back_order_img.gif" /></div>
+                     <div style="margin-top:10px;">为了帮助我们更好的解决问题，请您上传图片</div>
+                     <div style="color:#999">每张图片大小不超过2M，支持gif,jpg,png,jpeg格式文件</div></td>
+                 </tr>
+                 <tr id="thh_1">
+                   <td width="15%" align="right" valign=top>退款方式：</td>
+                   <td><input type="radio" name="back_pay" value="1" />
+                     退款至账户余额<br />
+                     <input type="radio" name="back_pay" value="2" checked="checked" />
+                     原支付方式返回
+                     <div style="color:#999; padding-left:20px;">如为现金支付，将会退款至您的账户余额或银行卡；</div>
+                     <div style="color:#999; padding-left:20px;">请您在 <a href="#" style="color:#005ea7">退款说明</a> 中查看退款时效</div></td>
+                 </tr>
+                 <tbody id="thh_address" style="display:none">
+                   <tr>
+                     <td width="15%" align="right" >收货地址：</td>
+                     <td> {insert_scripts files='utils.js,transport.js,region.js,shopping_flow.js'}
+                       <select name="country" id="selCountries_1" onchange="region.changed(this, 1, 'selProvinces_1')">
+                         <option value="0">{$lang.please_select}{$name_of_region[0]}</option>
+                         <!-- {foreach from=$country_list item=country} -->
+                         <option value="{$country.region_id}" {if $order.country eq $country.region_id}selected{/if}>{$country.region_name}</option>
+                         <!-- {/foreach} -->
+                       </select>
+                       <select name="province" id="selProvinces_1" onchange="region.changed(this, 2, 'selCities_1')">
+                         <option value="0">{$lang.please_select}{$name_of_region[1]}</option>
+                         <!-- {foreach from=$shop_province item=province} -->
+                         <option value="{$province.region_id}" {if $order.province eq $province.region_id}selected{/if}>{$province.region_name}</option>
+                         <!-- {/foreach} -->
+                       </select>
+                       <select name="city" id="selCities_1" onchange="region.changed(this, 3, 'selDistricts_1')">
+                         <option value="0">{$lang.please_select}{$name_of_region[2]}</option>
+                         <!-- {foreach from=$shop_city item=city} -->
+                         <option value="{$city.region_id}" {if $order.city eq $city.region_id}selected{/if}>{$city.region_name}</option>
+                         <!-- {/foreach} -->
+                       </select>
+                       <select name="district" id="selDistricts_1" {if !$shop_district}style="display:none"{/if}>
+                         <option value="0">{$lang.please_select}{$name_of_region[3]}</option>
+                         <!-- {foreach from=$shop_district item=district} -->
+                         <option value="{$district.region_id}" {if $order.district eq $district.region_id}selected{/if}>{$district.region_name}</option>
+                         <!-- {/foreach} -->
+                       </select>
+                       <div>
+                         <input type="text" name="back_address" id="back_address" size=50 value="{$order.address}">
+                         <font color=#ff3300>（*）</font></div></td>
+                   </tr>
+                   <tr>
+                     <td width="15%" align="right" >邮政编码：</td>
+                     <td><input type="text" name="back_zipcode"  id="back_zipcode" size=20 value="{$order.zip}">
+                       <font color=#ff3300>（*）</font></td>
+                   </tr>
+                   <tr>
+                     <td width="15%" align="right" >联系人姓名：</td>
+                     <td><input type="text" name="back_consignee"  id="back_consignee" size=20 value="{$order.consignee}">
+                       <font color=#ff3300>（*）</font></td>
+                   </tr>
+                   <tr>
+                     <td width="15%" align="right" >手机号码：</td>
+                     <td><input type="text" name="back_mobile"  id="back_mobile" size=20 value="{$order.mobile}">
+                       <font color=#ff3300>（*）</font></td>
+                   </tr>
+                 </tbody>
+                 <tr>
+                   <td width="15%" align="right" >我要留言：</td>
+                   <td><textarea name="back_postscript" rows=5 cols=50></textarea></td>
+                 </tr>
+                 <tr>
+                   <td colspan=2 align=center><input type="hidden" name="act" value="back_order_act">
+                     <input type="hidden" name="order_id" value="{$back_goods.order_id}">
+                     <input type="hidden" name="order_sn" value="{$back_goods.order_sn}">
+                     <input type="hidden" name="goods_id" value="{$back_goods.goods_id}">
+                     <input type="hidden" name="goods_name" value="{$back_goods.goods_name}">
+                     <input type="hidden" name="goods_sn" value="{$back_goods.goods_sn}">
+                     <input type="hidden" name="old_goods_number" value="{$back_goods.goods_number}">
+                     <input name="submit" type="submit" value="确认" class="bnt_blue_1" style="border:none;" />
+                     <input name="reset" type="reset" value="取消" class="bnt_blue_1" style="border:none;" /></td>
+                 </tr>
+               </table>
+               <script>
+
+   	function show_huan_goods()
+   	{
+   	   if (document.getElementById('huan_goods').style.display=="block")
+   	   {
+   		document.getElementById('huan_goods').style.display="none";
+   	   }
+   	   else if(document.getElementById('huan_goods').style.display=="none")
+   	   {
+   		document.getElementById('huan_goods').style.display="block";
+   	   }
+   	}
+
+   	function changeAtt(t,goods_id) {
+   	t.lastChild.checked='checked';
+   	for (var i = 0; i<t.parentNode.childNodes.length;i++) {
+   		if (t.parentNode.childNodes[i].className == 'cattsel') {
+   		t.parentNode.childNodes[i].className = '';
+   		}
+   	}
+
+   	t.className = "cattsel";
+   	}
+
+   	function  add_huan_goods(goods_id)
+   	{
+   	   var goods        = new Object();
+   	   var formBuy      = document.forms['theForm'];
+   	   spec_arr = getSelectedAttributes(formBuy);
+   	   goods.spec     = spec_arr;
+   	   goods.goods_id = goods_id;
+   	   Ajax.call('user.php?act=add_huan_goods', 'goods=' + goods.toJSONString(), add_huan_goodsResponse, 'POST', 'JSON');
+   	}
+          function rand_str(prefix)
+   	{
+   	var dd = new Date();
+   	 var tt = dd.getTime();
+   	tt = prefix + tt;
+
+   	var rand = Math.random();
+   	rand = Math.floor(rand * 100);
+
+   	return (tt + rand);
+   	}
+
+   	function add_huan_goodsResponse(result)
+   	{
+   		var table_list = document.getElementById('huan_box');
+   		var new_tr_id = rand_str('t');
+   		var index = table_list.rows.length;
+   		var new_row = table_list.insertRow(index);//新增行
+   		new_row.setAttribute("id", new_tr_id);
+   		var new_col = new_row.insertCell(0);
+   		new_col.innerHTML =  result.goods_name + result.content + '<input type="hidden" name="product_id_huan[]" id="pro_"'+index+' value="' + result.product_id + '"><input type="hidden" name="goods_attr_huan[]" value="' + result.content + '"><input type="button" class="button" value="删除 " onclick="javascript:del_huan_goods(\'' + new_tr_id + '\');"/>';
+
+   	}
+
+
+   	function del_huan_goods(tr_number)
+   	{
+   	if (tr_number.length > 0)
+   	{
+   		if (confirm("确定删除吗？") == false)
+   		{
+   			return false;
+   		}
+   		var table_list = document.getElementById('huan_box');
+   		for (var i = 0; i < table_list.rows.length; i++)
+   		{
+   		if (table_list.rows[i].id == tr_number)
+   		{
+   		 table_list.deleteRow(i);
+   		}
+   		}
+   	}
+   	return true;
+   	}
+
+   	function tui_box_show(type)
+   	{
+   		if (type == 1)
+   		{
+   			document.getElementById("thh_1").style.display = '';
+   			document.getElementById("thh_2").style.display = 'none';
+   			document.getElementById("thh_address").style.display = 'none';
+   		}
+
+   		if (type == 2)
+   		{
+   			document.getElementById("thh_1").style.display = 'none';
+   			document.getElementById("thh_2").style.display = '';
+   			document.getElementById("thh_address").style.display = '';
+   		}
+
+   		if (type == 3)
+   		{
+   			document.getElementById("thh_1").style.display = 'none';
+   			document.getElementById("thh_2").style.display = 'none';
+   			document.getElementById("thh_address").style.display = '';
+   		}
+
+   	}
+
+   	function check_back(frm)
+   	{
+   	var back_number = {$back_goods.goods_number};
+   	//alert(back_number);
+   	var msg = new Array();
+   	var err = false;
+   	if (frm.elements['back_consignee'].value == "" )
+   	{
+   	     err = true;
+   	     msg.push('换回商品收件人不能为空！');
+           }
+   	if (frm.elements['back_address'].value == "" )
+   	{
+   	     err = true;
+   	     msg.push('收货人地址不能为空！');
+           }
+
+   	var back_type_list = frm.elements["back_type"];
+   	var tui_goods_number=0;
+   	var huan_goods_number=0;
+   	if (back_type_list[0].checked == true)
+   	{
+   		tui_goods_number = frm.elements['tui_goods_number'].value;
+   	}
+   	if (back_type_list[1].checked == true)
+   	{
+   		var table_list = document.getElementById('huan_box');
+   		huan_goods_number = table_list.rows.length;
+   	}
+   	var all_goods_number = Number(huan_goods_number) + Number(tui_goods_number);
+   	var old_goods_number =frm.elements['old_goods_number'].value;
+   	//alert(all_goods_number);
+   	if (all_goods_number > old_goods_number)
+   	{
+   	     err = true;
+   	     msg.push('退换货总数不能大于原订单购买数量！');
+   	}
+
+   	if (err)
+   	{
+   	    message = msg.join("\n");
+   	    alert(message);
+   	}
+   	return ! err;
+   	}
+   	</script>
+             </form>
+</div>
+             <!-- {/if} -->
+
+             <!-- {if $action eq back_order_act} -->
+             	<div class="user-right" style=" float: right;">
+             <div class="tabmenu">
+               <ul class="tab pngFix">
+                 <li class="active"> <a href="#">退换货申请已提交</a> </li>
+               </ul>
+             </div>
+             <div class="blank"></div>
+             <table cellpadding=5 cellspacing=1 width=100% bgcolor="#E6E6E6" style="border-collapse:separate">
+               <tr>
+                 <td bgcolor="#FFFFFF" style="font-size:15px;font-weight:bold;line-height:180%;padding:20px;color:#555"> 商品寄回地址：{$back_address}<br>
+                   邮政编码：{$back_zipcode}<br>
+                   收件人：{$back_consignee} </td>
+               </tr>
+               <tr>
+                 <td bgcolor="#FFFFFF" style="padding:10px 20px 20px 30px"> 1、请尽快将退换货商品寄出<br>
+                   2、退换货商品寄出后，请您在“用户中心 》退换货订单 》详情”中填写快递信息<br>
+                   3、您随时可以在“退换货订单”中查看退换货进度<br>
+                   4、如果您有其他需要，请随时联系我们的客服。 </td>
+               </tr>
+               <tr>
+                 <td bgcolor="#FFFFFF" align=center><input type="button" value="确定" onclick='location.href="user.php?act=back_list";' style="cursor:pointer;border:none; background:#ED5854;color:#fff;padding:5px 15px"></td>
+               </tr>
+             </table>
+             </div>
+             <!-- {/if} -->
+
+   <!-- {if $action eq back_order_detail} -->
+   <div class="user-right" style=" float: right;">
+           <div class="tabmenu">
+             <ul class="tab pngFix">
+               <li class="active"> <a href="#">退换货订单详情</a> </li>
+             </ul>
+           </div>
+           <div class="blank"></div>
+           <table width="100%" border="0" cellpadding="5" cellspacing="1"  bgcolor="#E6E6E6">
+             <tr>
+               <td width="100%" height=25  bgcolor="#FFFFFF" style="padding-left:10px">原订单号：{$back_shipping.order_sn}</td>
+             </tr>
+             <tr>
+               <td width="100%" height=25  bgcolor="#FFFFFF" style="padding-left:10px">商品名称：{$back_shipping.goods_name}</td>
+             </tr>
+             <tr>
+               <td width="100%" height=25  bgcolor="#FFFFFF" style="padding-left:10px">售后类型：{if $back_shipping.back_type eq 1}退货{/if}{if $back_shipping.back_type eq 2}换货{/if}{if $back_shipping.back_type eq 3}维修{/if}</td>
+             </tr>
+           </table>
+           <div class="blank"></div>
+           {if $list_backgoods.0}
+           <table width="100%" border="0" cellpadding="5" cellspacing="1"  bgcolor="#E6E6E6">
+             {foreach from= $list_backgoods.0.goods_list item=bgoods}
+             <tr>
+               <td width="15%" align=center bgcolor="#FFFFFF"><font color=#ff3300>退回商品</font></td>
+               <td width="40%" bgcolor="#FFFFFF">{$bgoods.goods_name} </td>
+               <td width="25%" bgcolor="#FFFFFF">{if $bgoods.goods_attr}{$bgoods.goods_attr|nl2br}{/if} </td>
+               <td width="10%" bgcolor="#FFFFFF">数量：{if $bgoods.back_goods_number}{$bgoods.back_goods_number}{/if} </td>
+               <td width="10%" bgcolor="#FFFFFF">类型：退货 </td>
+             </tr>
+             {/foreach}
+             <tr>
+               <td  align=center bgcolor="#FFFFFF">退款金额</td>
+               <td colspan=4 bgcolor="#FFFFFF">应退金额：{$bgoods.back_goods_money} </td>
+             </tr>
+             <tr>
+               <td  align=center bgcolor="#FFFFFF">处理状态</td>
+               <td colspan=4 bgcolor="#FFFFFF">{$bgoods.status_back}</td>
+             </tr>
+             <tr>
+               <td align=center bgcolor="#FFFFFF">退款状态</td>
+               <td colspan=4 bgcolor="#FFFFFF">{$bgoods.status_refund} </td>
+             </tr>
+           </table>
+           {/if}
+           <div class="blank"></div>
+           {if $list_backgoods.1}
+           <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#E6E6E6">
+             {foreach from= $list_backgoods.1.goods_list name="list_backgoods_1" item=bgoods}
+             <tr>
+               <td width="15%" align=center bgcolor="#FFFFFF"><font color=#ff3300>{if $smarty.foreach.list_backgoods_1.iteration eq 1}退回{else}换回{/if}商品</font></td>
+               <td width="40%" bgcolor="#FFFFFF">{$bgoods.goods_name}</td>
+               <td width="25%" bgcolor="#FFFFFF">{if $bgoods.goods_attr}属性：{$bgoods.goods_attr}{/if} </td>
+               <td width="10%" bgcolor="#FFFFFF">数量：{if $bgoods.back_goods_number}{$bgoods.back_goods_number}{/if} </td>
+               <td width="10%" bgcolor="#FFFFFF">{if $smarty.foreach.list_backgoods_1.iteration eq 1}类型：换货{/if}</td>
+             </tr>
+             {/foreach}
+             <tr>
+               <td align=center bgcolor="#FFFFFF">退款金额</td>
+               <td colspan=4 bgcolor="#FFFFFF">应退金额：{$bgoods.back_goods_money}</td>
+             </tr>
+             <tr>
+               <td align=center  bgcolor="#FFFFFF">处理状态</td>
+               <td colspan=4 bgcolor="#FFFFFF">{$bgoods.status_back}</td>
+             </tr>
+             <tr>
+               <td align=center bgcolor="#FFFFFF">退款状态</td>
+               <td colspan=4  bgcolor="#FFFFFF">{$bgoods.status_refund} </td>
+             </tr>
+           </table>
+           <div class="blank"></div>
+           <table width="100%" border="0" cellpadding="5" cellspacing="1"  bgcolor="#E6E6E6">
+             <tr>
+               <td align=center width="15%"  bgcolor="#FFFFFF">寄回商品<br>
+                 收件人信息</td>
+               <td colspan=4  bgcolor="#FFFFFF">商品寄回地址：{$back_shipping.country_name} {$back_shipping.province_name} {$back_shipping.city_name} {$back_shipping.district_name} {$back_shipping.address}<br>
+                 邮政编码：{$back_shipping.zipcode}<br>
+                 收件人：{$back_shipping.consignee}<br></td>
+             </tr>
+             <tr>
+               <td align=center width="15%"  bgcolor="#FFFFFF">退款信息</td>
+               <td colspan=4  bgcolor="#FFFFFF">应退金额：{$back_shipping.refund_money_1}&nbsp;&nbsp;&nbsp;&nbsp;实退金额：{$back_shipping.refund_money_2}</td>
+             </tr>
+             <tr>
+               <td align=center width="15%"  bgcolor="#FFFFFF">退款形式</td>
+               <td colspan=4  bgcolor="#FFFFFF">{$back_shipping.refund_type_name}</td>
+             </tr>
+             <tr>
+               <td align=center width="15%"  bgcolor="#FFFFFF">退款说明</td>
+               <td colspan=4  bgcolor="#FFFFFF">{$back_shipping.refund_desc}</td>
+             </tr>
+           </table>
+           {/if}
+           <div class="blank"></div>
+           <br>
+           <div class="tabmenu">
+             <ul class="tab pngFix">
+               <li class="active"> <a href="#">  快递信息（请填写您寄回商品的快递信息）：</a> </li>
+             </ul>
+           </div>
+           <div class="blank"></div>
+           <form action="user.php" method="post">
+             <table width="100%" border="0" cellpadding="7" cellspacing="1" bgcolor="#dddddd">
+               <tr>
+                 <td width="100%"  style="padding-left:25px;"  bgcolor="#FFFFFF"> 快递公司：
+                   <select name="shipping_id" size=1>
+                     <option value="0">请选择快递公司</option>
+
+
+
+ 	{foreach from=$shipping_list item=shipping}
+
+
+
+                     <option value="{$shipping.shipping_id}" {if $back_shipping.shipping_id eq $shipping.shipping_id}selected{/if} >{$shipping.shipping_name} </option>
+
+
+
+ 	{/foreach}
+                   </select>
+                   快递运单号：
+                   <input type="text" name="invoice_no" size=20 value="{$back_shipping.invoice_no}">
+                   <input type="submit" name="submit" value="确定" {if $back_shipping.status_back gt 0}disabled{/if}>
+                   <input type="hidden" name="back_id" value="{$back_id}">
+                   <input type="hidden" name="act" value="back_order_detail_edit"></td>
+               </tr>
+             </table>
+           </form>
+           <div class="blank"></div>
+           <div class="blank"></div>
+           <div class="tabmenu">
+             <ul class="tab pngFix">
+               <li class="active"> <a href="#">留言/回复</a> </li>
+             </ul>
+           </div>
+           <div class="blank"></div>
+           <table width="100%" border="0" cellspacing="1" cellpadding="6" bgcolor="#E6E6E6">
+             <tr>
+               <td width="50" align="right" bgcolor="#FFFFFF">我说：</td>
+               <td bgcolor="#FFFFFF">{$back_shipping.postscript} （{$back_shipping.add_time}）</td>
+             </tr>
+             <!--{foreach from=$back_replay item=value}-->
+             {if $value.type eq 0}
+             <tr style="color:#F00">
+               <td align="right" bgcolor="#FFFFFF">客服：</td>
+               <td bgcolor="#FFFFFF">{$value.message} （{$value.add_time}）</td>
+             </tr>
+             {else}
+             <tr>
+               <td align="right" bgcolor="#FFFFFF">我说：</td>
+               <td bgcolor="#FFFFFF">{$value.message} （{$value.add_time}）</td>
+             </tr>
+             {/if}
+             <!--{/foreach}-->
+             <tr>
+               <td bgcolor="#FFFFFF"></td>
+               <td bgcolor="#FFFFFF"><script>
+             function check_replay()
+             {
+                 if (document.getElementById("message").value == '')
+                 {
+                     alert("请输入回复内容！");
+                     document.getElementById("message").focus();
+                     return false;
+                 }
+             }
+             </script>
+                 <form action="user.php?act=back_replay" method="post" onsubmit="return check_replay()">
+                   <input name="back_id" type="hidden" value="{$back_shipping.back_id}">
+                   <div>
+                     <textarea id="message" name="message" style="width:500px; height:60px;"></textarea>
+                   </div>
+                   <div class="blank"></div>
+                   <div>
+                     <input type="submit" value="回复" />
+                   </div>
+                 </form></td>
+             </tr>
+           </table>
+</div>
+           <!--{/if}-->
+
+
+<div class="fuwu-box clearfix">
+<img src="img/fuwu.jpg" alt="" />
+</div> 
+</div>
+
+
+<!-- footer -->
+<div class="footer">
+<div class="auto">
+	<ul class="pull-left footer-nav">
+		<li>
+		<b>关于我们</b>
+			<p><a href="#">关于我们</a></p>
+			<p><a href="#">新闻中心</a></p>
+			<p><a href="#">企业优势</a></p>
+			<p><a href="#">联系我们</a></p>
+		</li>
+		
+		<li>
+		<b>新手指南</b>
+			<p><a href="#">关于我们</a></p>
+			<p><a href="#">新闻中心</a></p>
+			<p><a href="#">企业优势</a></p>
+			<p><a href="#">联系我们</a></p>
+		</li>
+		
+		
+		<li>
+		<b>配送方式</b>
+			<p><a href="#">关于我们</a></p>
+			<p><a href="#">新闻中心</a></p>
+			<p><a href="#">企业优势</a></p>
+			<p><a href="#">联系我们</a></p>
+		</li>
+		
+		
+		<li>
+		<b>售后服务</b>
+			<p><a href="#">关于我们</a></p>
+			<p><a href="#">新闻中心</a></p>
+			<p><a href="#">企业优势</a></p>
+			<p><a href="#">联系我们</a></p>
+		</li>
+	</ul>
+	
+	<div class="footer-tel pull-right">
+	<p><img src="img/ico_tel.jpg" alt="" />全国热线</p>
+	<h3>400-518-1111</h3>
+	<p class="fw-time">周一至周日8:00-18:00</p>
+	<p class="tel-btn">24小时在线服务</p>
+	</div>
+	<div class="bottom">
+	<p class="gray">Copyright © 2013-2017 惠民建材网（www.huimin.com）——在线家装领导者 All Rights Reserved.</p>
+	装房子 买建材 就上惠民建材网 蒙ICP备123456789<br/>
+	鄂尔多斯市斯创有限公司<br/>
+	</div>
+</div>
+</div>
+</body>
+</html>

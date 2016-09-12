@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>店铺内页</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="shortcut icon" href="favicon.ico" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+<link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/style.css"/>
+
+<SCRIPT src="themes/68ecshopcom_360buy/js/jquery-1.2.6.pack.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="themes/68ecshopcom_360buy/js/base.js" type="text/javascript"></SCRIPT>
+
+{insert_scripts files='jquery.json.js,transport.js'}
+
+<!-- 展开关闭分类 -->
+<script type="text/javascript">
+function openShutManager(oSourceObj,oTargetObj,shutAble,oOpenTip,oShutTip){
+var sourceObj = typeof oSourceObj == "string" ? document.getElementById(oSourceObj) : oSourceObj;
+var targetObj = typeof oTargetObj == "string" ? document.getElementById(oTargetObj) : oTargetObj;
+var openTip = oOpenTip || "";
+var shutTip = oShutTip || "";
+if(targetObj.style.display!="none"){
+   if(shutAble) return;
+   targetObj.style.display="none";
+   if(openTip  &&  shutTip){
+    sourceObj.innerHTML = shutTip; 
+   }
+} else {
+   targetObj.style.display="block";
+   if(openTip  &&  shutTip){
+    sourceObj.innerHTML = openTip; 
+   }
+}
+}
+</script>
+<script>
+function guanzhu(sid){
+	Ajax.call('supplier.php', 'go=other&act=add_guanzhu&suppId=' + sid, selcartResponse, 'GET', 'JSON');
+}
+
+function selcartResponse(result){
+	alert(result.info);
+}
+</script>
+</head>
+<body>
+<!-- top -->
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+
+<div class="product-box">
+	<div class="auto">
+	<!-- sidebar -->
+	<div class="sidebar">
+		<!-- 左侧产品分类 -->
+		<div class="goods-box3">
+	<h3>  {$shopname}</h3>
+	<div class="goods-box301">
+	<img src="img/goods_r1.jpg" alt="" />
+	</div>
+
+	<div class="dianpu-txt1">
+    	<p>商店等级：{$userrank}</p>
+    	<p>商品数量：{$goodsnum}</p>
+    </div>
+
+	<div class="goods-box303">
+	<div class="dianpu-btn1">	
+<a href="http://wpa.qq.com/msgrd?v=3&uin={$serviceqq}&site=qq&menu=yes" target="_blank" alt="点击这里联系我" title="点击这里联系我">{$serviceqq}&nbsp;
+<img src="http://wpa.qq.com/pa?p=1:{$serviceqq}:4" height="16" border="0" alt="QQ" /></a>
+		<a onclick="guanzhu({$smarty.get.suppId});">收藏店铺</a>
+	</div>
+	<div class="dianpu-txt1">
+	<p>{$username}</p>
+	<p>正规备案：<img src="img/ico4.jpg" alt="" /></p>
+	<p>所在地：{$region}</p>
+	</div>
+	<div class="dianpu-btn2"><a href="supplier.php?suppId={$smarty.get.suppId}">进入店铺</a></div>
+	</div>
+</div>
+
+
+
+		<!-- 人气推荐 -->
+		 {if $hot_goods}
+		<div class="side2">
+			<h4>人气推荐</h4>
+			<ul>
+                <!--{foreach from=$hot_goods item=goods name=hot_goods}-->
+				<li>
+				<div class="main_img">
+				<a href="{$goods.url}"><img src=".{$goods.thumb}" alt="" /></a>
+				</div>
+				<h6><a href="{$goods.url}">{$goods.name}</a></h6>
+				<div class="cp-price"><font class="red">特约价：￥<b><!-- {if $goods.promote_price neq ""} -->{$goods.promote_price}<!-- {else}-->{$goods.shop_price}<!--{/if}--></b>
+				</font><font class="line-through">￥{$goods.market_price}</font></div>
+				</li>
+               <!--{/foreach}-->
+			</ul>
+		</div>
+		{/if}
+	</div>
+	<!-- sidebar End-->
+	
+	<div class="right-box">
+		<!-- position -->
+		<div class="position"> {$shopname}</div>
+		<!-- 价格区 -->
+		
+		<!-- 排序 -->
+		<div class="cp-paixu clearfix">
+		排序： 评价 <a href="#"><img src="img/down.jpg" alt="" /></a> 发布时间 <a href="#"><img src="img/down.jpg" alt="" /></a>配送至：
+		<select name="" id="">
+			<option value="">内蒙古鄂尔多斯市达拉特旗</option>
+			<option value="">内蒙古鄂尔多斯市达拉特旗</option>
+		</select>
+		
+		<span class="pull-right pages"><font class="red">共75件商品</font> &nbsp;&nbsp;<font class="red">1</font>/2 &nbsp;&nbsp; <a href="#"><</a> <a href="#">></a></span>
+		</div>
+		
+		<!-- 产品列表 -->
+		<div class="list-product">
+		<ul>
+		    <!--{foreach from=$shop_goods_list item=goods name=name}-->
+			<li>
+			<div class="main_img">
+			<a href="{$goods.url}">
+			    <img  data-original=".{$goods.thumb}" src=".{$goods.thumb}" title=".{$goods.name|escape:html}"  />
+			</a>
+			</div>
+			<h5><a href="{$goods.url}">{$goods.name}</a></h5>
+			<p class="cp-jg">特惠价￥<b>{$goods.shop_price}</b></p>
+			<p>原价：￥<span class="line-through">{$goods.market_price}</span></p>
+			<p>已成交：<font class="red">{$goods.count}</font></p>
+			<div class="cp-btn"><img src="img/cp_btn1.jpg" alt="" />{$goods.click_count} &nbsp;
+			<img src="img/cp_btn2.jpg" alt="" />9 &nbsp;
+			<img src="img/cp_btn3.jpg" alt="" />0  </div>
+			<p></p>
+			</li>
+			<!--{/foreach}-->
+
+
+
+		</ul>
+		
+		<!-- fenye -->
+		<div class="fenye">
+			<a href="#">上一页</a><a href="#">1</a><a href="#" class="on">2</a><a href="#">3</a><a href="#">下一页</a> 1/2页 &nbsp;&nbsp;&nbsp;到第<input type="text" value="2"/>页 <button>确定</button>
+		</div>
+		
+		<!-- 特别推荐 -->
+		<div class="tui-list">
+		 <h4>特别推荐</h4>
+		 <ul>
+        {if $best_goods}
+              <!--{foreach from=$best_goods item=goods name=best_goods}-->
+			 <li>
+			 <div class="main_img">
+			 <a href="{$goods.url}"><img src=".{$goods.thumb}" alt="" /></a> </div>
+			 <div class="tui-title"><a href="{$goods.url}">{$goods.name}</a></div>
+			 <h6 class="red">特惠价：￥<!-- {if $goods.promote_price neq ""} -->{$goods.promote_price}<!-- {else}-->{$goods.shop_price}<!--{/if}--></h6>
+			 </li>
+	        <!--{/foreach}-->
+        {/if}
+
+		 </ul>
+		</div>
+		
+		</div>
+		
+		
+		
+	</div>
+	
+<div class="fuwu-box clearfix">
+<img src="img/fuwu.jpg" alt="" />
+</div> 
+
+	</div>
+
+		
+</div>
+
+
+<!-- footer -->
+<div class="footer">
+<div class="auto">
+	<ul class="pull-left footer-nav">
+		<li>
+		<b>关于我们</b>
+			<p><a href="#">关于我们</a></p>
+			<p><a href="#">新闻中心</a></p>
+			<p><a href="#">企业优势</a></p>
+			<p><a href="#">联系我们</a></p>
+		</li>
+		
+		<li>
+		<b>新手指南</b>
+			<p><a href="#">关于我们</a></p>
+			<p><a href="#">新闻中心</a></p>
+			<p><a href="#">企业优势</a></p>
+			<p><a href="#">联系我们</a></p>
+		</li>
+		
+		
+		<li>
+		<b>配送方式</b>
+			<p><a href="#">关于我们</a></p>
+			<p><a href="#">新闻中心</a></p>
+			<p><a href="#">企业优势</a></p>
+			<p><a href="#">联系我们</a></p>
+		</li>
+		
+		
+		<li>
+		<b>售后服务</b>
+			<p><a href="#">关于我们</a></p>
+			<p><a href="#">新闻中心</a></p>
+			<p><a href="#">企业优势</a></p>
+			<p><a href="#">联系我们</a></p>
+		</li>
+	</ul>
+	
+	<div class="footer-tel pull-right">
+	<p><img src="img/ico_tel.jpg" alt="" />全国热线</p>
+	<h3>400-518-1111</h3>
+	<p class="fw-time">周一至周日8:00-18:00</p>
+	<p class="tel-btn">24小时在线服务</p>
+	</div>
+	<div class="bottom">
+	<p class="gray">Copyright © 2013-2017 惠民建材网（www.huimin.com）——在线家装领导者 All Rights Reserved.</p>
+	装房子 买建材 就上惠民建材网 蒙ICP备123456789<br/>
+	鄂尔多斯市斯创有限公司<br/>
+	</div>
+</div>
+</div>
+</body>
+</html>

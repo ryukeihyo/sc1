@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>首页</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<link rel="shortcut icon" href="favicon.ico" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+<link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/style.css"/>
+<link type="text/css" rel="stylesheet" href="themes/68ecshopcom_360buy/css/passport.css"/>
+<link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/increase-68.css" />
+<link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/68ecshop_commin.css" />
+<link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/teshu.css" />
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,user.js'}
+<script type="text/javascript" src="themes/68ecshopcom_360buy/js/jquery_email.js"></script>
+{insert_scripts files='jquery-1.6.2.min.js'}
+{insert_scripts files='jquery.json.js,transport.js'}
+</head>
+<body  onclick="ecshop68_onclick();">
+<!-- top -->
+{include file='library/user_header.lbi'}
+<!-- top end -->
+<!-- neck -->
+<div class="neck">
+<div class="auto">
+ <div class="logo pull-left"><a href="index.html"><img src="themes/68ecshopcom_360buy/img/logo.jpg" alt="" /></a></div>
+ <div class="top-ad pull-right"><img src="themes/68ecshopcom_360buy/img/top_ad.jpg" alt="" /></div>
+</div>
+</div>
+<!-- neck end -->
+
+<div class="top-xian"></div>
+
+<div class="auto">
+	<div class="login-bg">
+		<div class="login-box dlbox" >
+	  <form name="formLogin" action="user.php" method="post" onSubmit="return userLogin()">
+			<h5>账号登录</h5>
+			<dd><label for="">账号</label> <input type="text" id="username" name="username" class="text" tabindex="1"  value="" /></dd>
+			<dd><label for="">密码</label> <input type="password" id="password" name="password" class="text" tabindex="2" /></dd>
+			<div class="forget"><input type="checkbox" />自动登录  <a href="#" class="pull-right">忘记密码？</a></div>
+			<input type="hidden" name="act" value="act_login" />
+            <input type="hidden" name="back_act" value="{$back_act}" />
+			<dd class="login-btn">
+			<input type="submit" name="submit" class="btn-img btn-entry" id="     " value="登录" />
+			</dd>
+			<p class="login-link"><a href="user.php?act=register">免费注册></a></p>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- bottom -->
+<div class="bottom">
+<p class="gray">Copyright © 2013-2017 惠民建材网（www.huimin.com）——在线家装领导者 All Rights Reserved.</p>
+	装房子 买建材 就上惠民建材网 蒙ICP备123456789<br/>
+</div>
+</body>
+</html>

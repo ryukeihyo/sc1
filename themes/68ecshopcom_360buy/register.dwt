@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta  http-equiv="Content-Type" content="text/html; charset="UTF-8"/>
+<title>{$page_title}</title>
+<meta name="keywords" content="{$keywords}" />
+<meta name="description" content="{$description}" />
+<link rel="shortcut icon" href="favicon.ico" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+<link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/style.css"/>
+<link type="text/css" rel="stylesheet" href="themes/68ecshopcom_360buy/css/passport.css"/>
+
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,user.js,transport.js'}
+
+
+<script type="text/javascript" src="sms/sms.js"></script>
+<style type="text/css">
+#username_notice{ color:#f00};
+#password_notice{ color:#f00};
+</style>
+</head>
+<body>
+<!-- top -->
+<div class="top">
+	<div class="auto">
+		<div class="pull-left top-left">欢迎访问惠民建材网</div>
+		<div class="pull-right">
+		<a href="user.php" class="top-link">登录</a><span>|</span><a href="user.php?act=register" class="top-link">注册</a><span>|</span>
+		<span class="w26"></span><a href="#">帮助中心<img src="../img/ico1.jpg" alt="" /></a><span class="w26"></span>
+		<a href="#">网站导航<img src="img/ico1.jpg" alt="" /></a>
+		</div>
+	</div>
+</div>
+<!-- top end -->
+<!-- neck -->
+<div class="neck">
+<div class="auto">
+ <div class="logo pull-left"><a href="index.html"><img src="img/logo.jpg" alt="" /></a></div>
+ <div class="top-ad pull-right"><img src="img/top_ad.jpg" alt="" /></div>
+</div>
+</div>
+<!-- neck end -->
+
+<div class="top-xian"></div>
+
+<div class="auto" >
+	<div class="login-bg" id="regist" >
+		<div class="login-box">
+			<h5>欢迎注册</h5>
+			   <form action="user.php" method="post" name="formUser" onsubmit="">
+			<dd><label for="">手机</label> <input  name="username" id="username" placeholder="请输入手机号码" type="text"  onblur="is_registered(this.value);"   /></dd>
+			<label id="username_notice" class="font-color" style="float:left"></label>
+			<dd><label for="">密码</label> <input  name="password" type="password" placeholder="●●●●●●" id="password1" onblur="check_password(this.value);" onkeyup="checkIntensity(this.value)" /></dd>
+			<label id="password_notice" style="float:left;color: red;"></label>
+			<dd class="yzm">
+			    <label for="">验证码</label>
+			    <input type="text"  name="mobile_code" id="mobile_code" size="6" placeholder="请输入验证码"   value=""/>
+			     <input id="zphone" type="button" class='input' value=" 获取手机验证码 " onclick="sendSms();">
+			    <input type="hidden" id="sms_code" value="{$sms_code}">
+			      <script>var mobile_field='username';</script>
+			</dd>
+
+			<dd class="login-btn">
+			<input type="hidden" value="act_register" name="act">
+			<input type="hidden" value="" name="back_act">
+			<input name="Submit" type="submit" class="btn-img btn-regist" id="registsubmit" value="立即注册"/></input>
+			</dd>
+			<p class="login-link"><a href="user.php">去登录></a></p>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- bottom -->
+<div class="bottom">
+<p class="gray">Copyright © 2013-2017 惠民建材网（www.huimin.com）——在线家装领导者 All Rights Reserved.</p>
+	装房子 买建材 就上惠民建材网 蒙ICP备123456789<br/>
+</div>
+</body>
+<script type="text/javascript">
+var process_request = "{$lang.process_request}";
+{foreach from=$lang.passport_js item=item key=key}
+var {$key} = "{$item}";
+{/foreach}
+var username_exist = "{$lang.username_exist}";
+</script>
+</html>

@@ -1,0 +1,21 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript">
+var process_request = "{$lang.process_request}";
+</script>
+{insert_scripts files='utils.js,common.min.js'}
+<!-- top -->
+<div class="top">
+	<div class="auto">
+    		<div class="pull-left top-left">
+    		{* ECSHOP 提醒您：根据用户id来调用member_info.lbi显示不同的界面  *}{insert name='member_info'}
+            </div>
+    		<div class="pull-right">
+    		 {if !$smarty.session.user_id}
+    		<a href="user.php" class="top-link">登录</a><span>|</span><a href="user.php?act=register" class="top-link">注册</a><span>|</span>
+    		{/if}
+    		<span class="w26"></span><a href="#">帮助中心<img src="themes/68ecshopcom_360buy/img/ico1.jpg" alt="" /></a><span class="w26"></span>
+    		<a href="#">网站导航<img src="themes/68ecshopcom_360buy/img/ico1.jpg" alt="" /></a>
+    </div>
+	</div>
+</div>
+<!-- top end -->

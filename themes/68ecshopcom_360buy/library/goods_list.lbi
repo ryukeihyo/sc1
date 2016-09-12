@@ -1,0 +1,48 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+上架 <a href="#"></a>
+<a href="{$script_name}.php?category={$category}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter={$filterid}&mystock={$mystock}&filter_attr={$filter_attr}&page={$pager.page}&sort=goods_id&order=<!-- {if $pager.sort == 'goods_id' && $pager.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->#goods_list">
+<!--{if $pager.sort == 'goods_id' && $pager.order == 'DESC'}  -->
+<img src="img/up2.jpg" alt="" />
+<!-- {else} -->
+<img src="img/down.jpg" alt="" />
+<!-- {/if} -->
+</a>
+销量
+<a href="{$script_name}.php?category={$category}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter={$filterid}&mystock={$mystock}&filter_attr={$filter_attr}&page={$pager.page}&sort=salenum&order=<!-- {if $pager.sort == 'salenum' && $pager.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->#goods_list">
+<!-- {if $pager.sort == 'salenum' && $pager.order == 'DESC'} -->
+<img src="img/up2.jpg" alt="" />
+<!-- {else} -->
+<img src="img/down.jpg" alt="" />
+<!-- {/if} -->
+</a>
+价格
+<a href="{$script_name}.php?category={$category}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter={$filterid}&mystock={$mystock}&filter_attr={$filter_attr}&page={$pager.page}&sort=shop_price&order=<!-- {if $pager.sort == 'shop_price' && $pager.order == 'ASC'} -->DESC<!-- {else} -->ASC<!-- {/if} -->#goods_list">
+<!-- {if $pager.sort == 'shop_price' && $pager.order == 'ASC'} -->
+<img src="img/up2.jpg" alt="" />
+<!-- {else} -->
+<img src="img/down.jpg" alt="" />
+<!-- {/if} -->
+</a>
+人气
+<a href="{$script_name}.php?category={$category}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter={$filterid}&mystock={$mystock}&filter_attr={$filter_attr}&page={$pager.page}&sort=click_count&order=<!-- {if $pager.sort == 'click_count' && $pager.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->#goods_list" rel='nofollow'>
+<!-- {if $pager.sort == 'click_count' && $pager.order == 'DESC'} -->
+<img src="img/up2.jpg" alt="" />
+<!-- {else} -->
+<img src="img/down.jpg" alt="" />
+<!-- {/if} -->
+</a>
+<span class="pull-right pages">
+  <font class="red">共{$pager.record_count}件商品</font> &nbsp;&nbsp;
+  <font class="red">{$pager.page}</font>/{$pager.page_count} &nbsp;&nbsp;
+  <!-- {if $pager.page_prev} -->
+     <a href="{$pager.page_prev}" > < </a>
+     <!-- {else} -->
+     <span class="prev-disabled"><a> < </a> </span>
+     <!-- {/if} -->
+     <!-- {if $pager.page_next} -->
+     <a href="{$pager.page_next}" > > </a>
+     <!-- {else} -->
+     <a>></a>
+   <!-- {/if} -->
+</span>
+
